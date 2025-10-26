@@ -24,6 +24,10 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::get('/{id}', [DocumentController::class, 'getDocument']);
         Route::post('/{id}/acknowledge', [DocumentController::class, 'acknowledgeDocument']);
         Route::get('/{id}/download', [DocumentController::class, 'downloadDocument']);
+        //QR Codes
+         Route::get('/document/{id}/qr-code', [DocumentController::class, 'getQRCode']);
+    Route::get('/document/{id}/qr-code/download', [DocumentController::class, 'downloadQRCode']);
+    
     });
     // Admin routes (staff and admin only)
     Route::prefix('admin')->group(function () {

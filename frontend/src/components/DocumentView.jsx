@@ -1,11 +1,13 @@
-
+// ====================================
+// DOCUMENT VIEW COMPONENT - UPDATED WITH QR CODE FEATURES
+// File: smartdoc-frontend/src/components/DocumentView.jsx
+// ====================================
 
 import React, { useState, useEffect, useCallback } from 'react';
-import { Container, Row, Col, Card, Button, Badge, Table, Alert } from 'react-bootstrap';
+import { Container, Row, Col, Card, Button, Badge, Table, Alert, Modal } from 'react-bootstrap';
 import { useParams, useNavigate } from 'react-router-dom';
+import { QRCodeSVG } from 'qrcode.react';
 import api from '../services/api';
-import QRCode from 'qrcode.react';
-
 
 const DocumentView = ({ user }) => {
   const { id } = useParams();
@@ -14,6 +16,7 @@ const DocumentView = ({ user }) => {
   const [loading, setLoading] = useState(true);
   const [acknowledging, setAcknowledging] = useState(false);
   const [success, setSuccess] = useState('');
+  const [showQRModal, setShowQRModal] = useState(false);
 
   const fetchDocument = useCallback(async () => {
     try {
@@ -52,7 +55,7 @@ const DocumentView = ({ user }) => {
       });
 
       const url = window.URL.createObjectURL(new Blob([response.data]));
-      const link = window.document.createElement('a'); // ✅ fixed bug
+      const link = window.document.createElement('a');
       link.href = url;
       link.setAttribute('download', document.title || 'document.pdf');
       window.document.body.appendChild(link);
@@ -62,6 +65,116 @@ const DocumentView = ({ user }) => {
       console.error('Failed to download document:', error);
       alert('Failed to download document');
     }
+  };
+
+  const handleDownloadQR = () => {
+    const svg = window.document.getElementById(`qr-code-${id}`);
+    if (!svg) {
+      console.error('QR code element not found');
+      return;
+    }
+    
+    const svgData = new XMLSerializer().serializeToString(svg);
+    const canvas = window.document.createElement('canvas');
+    const ctx = canvas.getContext('2d');
+    const img = new Image();
+    
+    img.onload = () => {
+      canvas.width = img.width;
+      canvas.height = img.height;
+      ctx.drawImage(img, 0, 0);
+      const pngFile = canvas.toDataURL('image/png');
+      
+      const downloadLink = window.document.createElement('a');
+      downloadLink.download = `QR-${document.document_id}.png`;
+      downloadLink.href = pngFile;
+      downloadLink.click();
+    };
+    
+    img.src = 'data:image/svg+xml;base64,' + btoa(unescape(encodeURIComponent(svgData)));
+  };
+
+  const handlePrintQR = () => {
+    const documentUrl = `${window.location.origin}/document/${id}`;
+    const printWindow = window.open('', '', 'height=600,width=800');
+    
+    printWindow.document.write(`
+      <!DOCTYPE html>
+      <html>
+        <head>
+          <title>Print QR Code - ${document.document_id}</title>
+          <style>
+            body {
+              font-family: Arial, sans-serif;
+              display: flex;
+              flex-direction: column;
+              align-items: center;
+              justify-content: center;
+              padding: 40px;
+              margin: 0;
+            }
+            .qr-container {
+              text-align: center;
+              border: 3px solid #000;
+              padding: 40px;
+              margin: 20px;
+              border-radius: 10px;
+            }
+            h1 { margin: 0 0 10px 0; color: #333; }
+            h2 { margin: 10px 0; color: #666; }
+            p { margin: 8px 0; font-size: 14px; }
+            code {
+              background: #f4f4f4;
+              padding: 4px 8px;
+              border-radius: 4px;
+              font-family: monospace;
+            }
+            canvas { margin: 20px 0; border: 1px solid #ddd; }
+            .footer { margin-top: 20px; font-size: 12px; color: #999; }
+            button {
+              margin-top: 30px;
+              padding: 12px 24px;
+              font-size: 16px;
+              background: #007bff;
+              color: white;
+              border: none;
+              border-radius: 5px;
+              cursor: pointer;
+            }
+            @media print {
+              button { display: none; }
+            }
+          </style>
+        </head>
+        <body>
+          <div class="qr-container">
+            <h1>SMART-DOCS</h1>
+            <h2>${document.title}</h2>
+            <div id="qr-container"></div>
+            <p><strong>Document ID:</strong> <code>${document.document_id}</code></p>
+            <p><strong>Paper ID:</strong> <code>${document.paper_id}</code></p>
+            <p><strong>Uploaded:</strong> ${new Date(document.created_at).toLocaleDateString()}</p>
+            <div class="footer">
+              <p>Scan QR code to access this document</p>
+            </div>
+          </div>
+          <button onclick="window.print()">Print QR Code</button>
+          <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.1/build/qrcode.min.js"></script>
+          <script>
+            QRCode.toCanvas(document.createElement('canvas'), '${documentUrl}', { 
+              width: 256,
+              margin: 2,
+              errorCorrectionLevel: 'H'
+            }, function (error, canvas) {
+              if (error) console.error(error);
+              document.getElementById('qr-container').appendChild(canvas);
+            });
+          </script>
+        </body>
+      </html>
+    `);
+    
+    printWindow.document.close();
   };
 
   const getActivityIcon = (activityType) => {
@@ -92,6 +205,7 @@ const DocumentView = ({ user }) => {
 
   const isRecipient = document.recipients?.some(r => r.id === user.id);
   const myRecipientData = document.recipients?.find(r => r.id === user.id);
+  const documentUrl = `${window.location.origin}/document/${id}`;
 
   return (
     <Container className="mt-4 mb-5">
@@ -106,14 +220,14 @@ const DocumentView = ({ user }) => {
 
       {success && (
         <Alert variant="success" dismissible onClose={() => setSuccess('')}>
+          <i className="bi bi-check-circle me-2"></i>
           {success}
         </Alert>
       )}
 
-      {/* Document Header */}
-      <Row className="mb-4">
-        <Col>
-          <Card className="border-0 shadow-sm">
+      <Row>
+        <Col lg={8} className="mb-4">
+          <Card className="border-0 shadow-sm mb-4">
             <Card.Body className="p-4">
               <div className="d-flex justify-content-between align-items-start mb-3">
                 <div className="flex-grow-1">
@@ -128,16 +242,14 @@ const DocumentView = ({ user }) => {
                     </span>
                   </div>
                 </div>
-                <div className="text-end">
-                  {document.qr_code_path && (
-                    <img
-                      src={`${process.env.REACT_APP_STORAGE_URL}/${document.qr_code_path}`}
-                      alt="QR Code"
-                      style={{ width: '100px', height: '100px' }}
-                      className="border rounded"
-                    />
-                  )}
-                </div>
+                <Button
+                  variant="outline-primary"
+                  size="sm"
+                  onClick={() => setShowQRModal(true)}
+                >
+                  <i className="bi bi-qr-code me-1"></i>
+                  QR Code
+                </Button>
               </div>
 
               <hr />
@@ -155,10 +267,7 @@ const DocumentView = ({ user }) => {
               </Row>
 
               <div className="d-flex gap-2 flex-wrap">
-                <Button
-                  variant="primary"
-                  onClick={handleDownload}
-                >
+                <Button variant="primary" onClick={handleDownload}>
                   <i className="bi bi-download me-2"></i>
                   Download
                 </Button>
@@ -184,21 +293,17 @@ const DocumentView = ({ user }) => {
                 )}
 
                 {myRecipientData?.pivot?.is_acknowledged && (
-                  <Badge bg="success" className="p-2">
+                  <Badge bg="success" className="p-2 d-inline-flex align-items-center">
                     <i className="bi bi-check-circle me-2"></i>
-                    Acknowledged on {new Date(myRecipientData.pivot.acknowledged_at).toLocaleString()}
+                    Acknowledged on {new Date(myRecipientData.pivot.acknowledged_at).toLocaleDateString()}
                   </Badge>
                 )}
               </div>
             </Card.Body>
           </Card>
-        </Col>
-      </Row>
 
-      <Row>
-        {/* Recipients */}
-        <Col md={6} className="mb-4">
-          <Card className="border-0 shadow-sm h-100">
+          {/* Recipients */}
+          <Card className="border-0 shadow-sm">
             <Card.Header className="bg-white border-0 py-3">
               <h5 className="mb-0 fw-bold">
                 <i className="bi bi-people me-2"></i>
@@ -211,6 +316,7 @@ const DocumentView = ({ user }) => {
                   <tr>
                     <th>Name</th>
                     <th>Department</th>
+                    <th>Status</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -239,9 +345,54 @@ const DocumentView = ({ user }) => {
           </Card>
         </Col>
 
-        {/* Activity Timeline */}
-        <Col md={6} className="mb-4">
-          <Card className="border-0 shadow-sm h-100">
+        {/* Right Column - QR Code & Activity */}
+        <Col lg={4}>
+          {/* QR Code Card */}
+          <Card className="border-0 shadow-sm mb-4 sticky-top" style={{ top: '20px' }}>
+            <Card.Header className="bg-white border-0 py-3">
+              <h5 className="mb-0">
+                <i className="bi bi-qr-code me-2"></i>
+                Quick Access QR
+              </h5>
+            </Card.Header>
+            <Card.Body className="text-center">
+              <div className="p-3 bg-light rounded mb-3">
+                <QRCodeSVG
+                  id={`qr-code-${id}`}
+                  value={documentUrl}
+                  size={180}
+                  level="H"
+                  includeMargin={true}
+                  style={{ width: '100%', height: 'auto' }}
+                />
+              </div>
+              <p className="text-muted small mb-3">
+                <i className="bi bi-info-circle me-1"></i>
+                Scan to access this document instantly
+              </p>
+              <div className="d-grid gap-2">
+                <Button
+                  variant="outline-primary"
+                  size="sm"
+                  onClick={handleDownloadQR}
+                >
+                  <i className="bi bi-download me-2"></i>
+                  Download QR
+                </Button>
+                <Button
+                  variant="outline-secondary"
+                  size="sm"
+                  onClick={handlePrintQR}
+                >
+                  <i className="bi bi-printer me-2"></i>
+                  Print QR
+                </Button>
+              </div>
+            </Card.Body>
+          </Card>
+
+          {/* Activity Timeline */}
+          <Card className="border-0 shadow-sm">
             <Card.Header className="bg-white border-0 py-3">
               <h5 className="mb-0 fw-bold">
                 <i className="bi bi-clock-history me-2"></i>
@@ -279,6 +430,50 @@ const DocumentView = ({ user }) => {
           </Card>
         </Col>
       </Row>
+
+      {/* QR Code Modal */}
+      <Modal show={showQRModal} onHide={() => setShowQRModal(false)} centered>
+        <Modal.Header closeButton>
+          <Modal.Title>
+            <i className="bi bi-qr-code me-2"></i>
+            Document QR Code
+          </Modal.Title>
+        </Modal.Header>
+        <Modal.Body className="text-center py-4">
+          <div className="p-4 bg-light rounded mb-3">
+            <QRCodeSVG
+              value={documentUrl}
+              size={300}
+              level="H"
+              includeMargin={true}
+              style={{ width: '100%', height: 'auto' }}
+            />
+          </div>
+          <h5 className="mb-2">{document.title}</h5>
+          <p className="text-muted mb-1">
+            <small>Document ID: <code>{document.document_id}</code></small>
+          </p>
+          <p className="text-muted mb-0">
+            <small>
+              <i className="bi bi-info-circle me-1"></i>
+              Scan this QR code to quickly access this document
+            </small>
+          </p>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="outline-primary" onClick={handleDownloadQR}>
+            <i className="bi bi-download me-2"></i>
+            Download
+          </Button>
+          <Button variant="outline-secondary" onClick={handlePrintQR}>
+            <i className="bi bi-printer me-2"></i>
+            Print
+          </Button>
+          <Button variant="secondary" onClick={() => setShowQRModal(false)}>
+            Close
+          </Button>
+        </Modal.Footer>
+      </Modal>
     </Container>
   );
 };

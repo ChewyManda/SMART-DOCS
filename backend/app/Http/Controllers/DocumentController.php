@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Http\Controllers;
 
 use App\Models\Document;
@@ -34,10 +35,15 @@ class DocumentController extends Controller
             'paper_id' => Document::generatePaperId(),
         ]);
 
-        // Generate QR Code
-        $qrCode = QrCode::format('svg')->size(300)->generate(
-            route('document.verify', $document->paper_id)
-        );
+        // Generate QR Code that links directly to document view page
+        $frontendUrl = env('FRONTEND_URL', 'http://localhost:3000');
+        $documentUrl = $frontendUrl . '/document/' . $document->id;
+        
+        $qrCode = QrCode::format('svg')
+            ->size(300)
+            ->errorCorrection('H')
+            ->generate($documentUrl);
+            
         $qrPath = 'qrcodes/' . $document->paper_id . '.svg';
         Storage::disk('public')->put($qrPath, $qrCode);
         $document->qr_code_path = $qrPath;
@@ -46,7 +52,7 @@ class DocumentController extends Controller
         // Attach recipients
         $document->recipients()->attach($request->recipients);
 
-        // Log activity - FIXED: use 'user_id' not 'users.id'
+        // Log activity
         DocumentActivity::create([
             'document_id' => $document->id,
             'user_id' => $request->user()->id,
@@ -54,7 +60,7 @@ class DocumentController extends Controller
             'details' => 'Document uploaded',
         ]);
 
-        // Send notifications to recipients - FIXED: use 'user_id' not 'users.id'
+        // Send notifications to recipients
         foreach ($request->recipients as $recipientId) {
             Notification::create([
                 'user_id' => $recipientId,
@@ -111,21 +117,17 @@ class DocumentController extends Controller
 
         // Mark as viewed
         if (!$user->isStaff()) {
-            // Check if user is a recipient using the pivot table
             $isRecipient = $document->recipients()->where('users.id', $user->id)->exists();
             
             if ($isRecipient) {
-                // Get the pivot data
                 $recipientData = $document->recipients()->where('users.id', $user->id)->first();
                 
-                // Only update if not already viewed
                 if ($recipientData && isset($recipientData->pivot) && !$recipientData->pivot->is_viewed) {
                     $document->recipients()->updateExistingPivot($user->id, [
                         'is_viewed' => true,
                         'viewed_at' => now(),
                     ]);
 
-                    // FIXED: use 'user_id' not 'users.id'
                     DocumentActivity::create([
                         'document_id' => $document->id,
                         'user_id' => $user->id,
@@ -144,11 +146,17 @@ class DocumentController extends Controller
         $user = $request->user();
         $document = Document::findOrFail($id);
 
-        // FIXED: use 'users.id' when querying with WHERE clause
         $recipient = $document->recipients()->where('users.id', $user->id)->first();
         
         if (!$recipient) {
             return response()->json(['message' => 'Unauthorized'], 403);
+        }
+
+        // Check if already acknowledged
+        if ($recipient->pivot->is_acknowledged) {
+            return response()->json([
+                'message' => 'Document already acknowledged'
+            ], 400);
         }
 
         $document->recipients()->updateExistingPivot($user->id, [
@@ -156,7 +164,6 @@ class DocumentController extends Controller
             'acknowledged_at' => now(),
         ]);
 
-        // FIXED: use 'user_id' not 'users.id'
         DocumentActivity::create([
             'document_id' => $document->id,
             'user_id' => $user->id,
@@ -165,7 +172,8 @@ class DocumentController extends Controller
         ]);
 
         return response()->json([
-            'message' => 'Document acknowledged successfully'
+            'message' => 'Document acknowledged successfully',
+            'document' => $document->fresh()->load('recipients', 'uploader')
         ]);
     }
 
@@ -178,7 +186,6 @@ class DocumentController extends Controller
             return response()->json(['message' => 'Unauthorized'], 403);
         }
 
-        // FIXED: use 'user_id' not 'users.id'
         DocumentActivity::create([
             'document_id' => $document->id,
             'user_id' => $user->id,
@@ -230,6 +237,50 @@ class DocumentController extends Controller
             return response()->json(['message' => 'Document not found'], 404);
         }
 
-        return response()->json(['message' => 'Document verified', 'document' => $document]);
+        return response()->json([
+            'message' => 'Document verified',
+            'document' => $document->load('uploader')
+        ]);
+    }
+
+  
+    public function getQRCode($id)
+    {
+        $document = Document::findOrFail($id);
+
+        if (!$document->qr_code_path || !Storage::disk('public')->exists($document->qr_code_path)) {
+            // Regenerate QR code if missing
+            $frontendUrl = env('FRONTEND_URL', 'http://localhost:3000');
+            $documentUrl = $frontendUrl . '/document/' . $document->id;
+            
+            $qrCode = QrCode::format('svg')
+                ->size(300)
+                ->errorCorrection('H')
+                ->generate($documentUrl);
+                
+            $qrPath = 'qrcodes/' . $document->paper_id . '.svg';
+            Storage::disk('public')->put($qrPath, $qrCode);
+            $document->qr_code_path = $qrPath;
+            $document->save();
+        }
+
+        $qrContent = Storage::disk('public')->get($document->qr_code_path);
+
+        return response($qrContent)
+            ->header('Content-Type', 'image/svg+xml');
+    }
+
+    public function downloadQRCode($id)
+    {
+        $document = Document::findOrFail($id);
+
+        if (!$document->qr_code_path || !Storage::disk('public')->exists($document->qr_code_path)) {
+            return response()->json(['message' => 'QR code not found'], 404);
+        }
+
+        return Storage::disk('public')->download(
+            $document->qr_code_path,
+            'QR-' . $document->document_id . '.svg'
+        );
     }
 }
