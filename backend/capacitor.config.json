@@ -1,0 +1,10 @@
+{
+  "appId": "com.ucc.smartdocs",
+  "appName": "SMART DOCS",
+  "webDir": "public",
+  "server":{
+  "url": "https://srv1143741.hstgr.cloud/",
+  "cleartext":true 
+  }
+
+}

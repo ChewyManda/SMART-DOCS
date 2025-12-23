@@ -1,0 +1,447 @@
+/* ==========================
+   DOCUMENT LIST CONTAINER
+   ========================== */
+.document-list-container {
+  padding: 25px 60px 25px 85px;
+  background: #f8f9fb;
+  min-height: 100vh;
+  transition: none !important;
+}
+
+@media (max-width: 992px) {
+  .document-list-container {
+    padding: 20px 20px 40px 20px;
+  }
+}
+
+/* ==========================
+   PAGE HEADER
+   ========================== */
+.page-header .dashboard-title {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #212529;
+}
+
+.page-header .dashboard-subtitle {
+  font-size: 0.95rem;
+  color: #6c757d;
+  margin-top: 4px;
+}
+
+/* ==========================
+   UPLOAD BUTTON (PRIMARY)
+   ========================== */
+.upload-btn-document-list {
+  background-color: #16a34a !important;
+  border-color: #16a34a !important;
+  color: white !important;
+}
+
+.upload-btn-document-list:hover {
+  background-color: #128c3f !important;
+  border-color: #128c3f !important;
+  transform: none;
+  box-shadow: none;
+}
+
+/* ==========================
+   SEARCH + FILTER CARD
+   ========================== */
+.search-filter-card {
+  border-radius: 14px;
+  box-shadow: 0px 4px 20px rgba(0,0,0,0.05);
+  padding: 14px 18px;
+}
+
+/* COMPACT FIELDS */
+.search-filter-card input,
+.search-filter-card select,
+.search-filter-card button {
+  height: 36px;
+  font-size: 0.82rem;
+  padding: 6px 10px;
+}
+
+/* Search button */
+.custom-btn-search {
+  background-color: #16a34a !important;
+  border-color: #16a34a !important;
+  color: white !important;
+}
+.custom-btn-search:hover {
+  background-color: #128c3f !important;
+  border-color: #128c3f !important;
+  transform: none;
+  box-shadow: none;
+}
+
+/* ==========================
+   AUTOCOMPLETE SUGGESTIONS
+   ========================== */
+.autocomplete-suggestions {
+  position: absolute;
+  top: 38px;
+  left: 0;
+  right: 0;
+  z-index: 1050;
+  background: #fff;
+  border: 1px solid #e1e4eb;
+  border-radius: 10px;
+  max-height: 220px;
+  overflow-y: auto;
+  box-shadow: 0px 4px 20px rgba(0,0,0,0.08);
+  padding: 8px 0;
+  margin-top: 2px;
+}
+
+.autocomplete-suggestions li {
+  padding: 8px 12px;
+  cursor: pointer;
+  font-size: 0.82rem;
+  color: #495057;
+}
+
+/* hover or keyboard active highlight */
+.autocomplete-suggestions li:hover,
+.autocomplete-suggestions li.active {
+  background-color: #f1f3f5;
+  color: #212529;
+  font-weight: 500;
+}
+
+/* ==========================
+   DOCUMENT TABLE CARD
+   ========================== */
+.document-table-card {
+  border-radius: 14px;
+  box-shadow: 0px 4px 25px rgba(0,0,0,0.06);
+  overflow: hidden;
+}
+
+.document-table-card-header {
+  background-color: #ffffff;
+  padding: 15px 20px;
+  border-bottom: 1px solid #e9ecef;
+}
+
+.document-table-card-footer {
+  background-color: #ffffff;
+  border-top: 1px solid #e9ecef;
+  padding: 12px 20px;
+}
+
+/* ==========================
+   TABLE – MODERN STYLE
+   ========================== */
+.table-modern {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0 6px;
+}
+
+.table-modern thead th {
+  background-color: #f8f9fa;
+  color: #495057;
+  font-weight: 600;
+  border: none;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.table-modern tbody {
+  display: table-row-group; /* default */
+}
+
+.table-modern tbody tr {
+  background-color: #fff;
+  cursor: pointer;
+}
+
+.table-modern td,
+.table-modern th {
+  vertical-align: middle;
+  padding: 12px 15px;
+}
+
+/* Optional vertical scroll if needed */
+.table-wrapper {
+  max-height: 330px;
+  overflow-y: auto;
+}
+
+/* ==========================
+   HIGHLIGHTED ROW
+   ========================== */
+.highlight-row {
+  background-color: #fff3cd !important;
+}
+
+/* ==========================
+   BADGES
+   ========================== */
+.badge {
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 0.45em 0.7em;
+  border-radius: 0.5rem;
+  text-transform: uppercase;
+}
+
+.badge-success { background-color: #198754; }
+.badge-info { background-color: #0dcaf0; }
+.badge-danger { background-color: #dc3545; }
+.badge-secondary { background-color: #6c757d; }
+.badge-primary { background-color: #0d6efd; }
+
+/* ==========================
+   VIEW BUTTON (SECONDARY)
+   ========================== */
+.custom-btn-view {
+  background-color: #f97316 !important;
+  border-color: #f97316 !important;
+  color: white !important;
+}
+
+.custom-btn-view:hover {
+  background-color: #e6630d !important;
+  border-color: #e6630d !important;
+  transform: none !important;
+  box-shadow: none;
+}
+
+/* ==========================
+   PAGINATION – CENTERED
+   ========================== */
+.pagination {
+  display: flex;
+  justify-content: center;
+  margin-top: 16px;
+  margin-bottom: 16px;
+}
+
+.pagination .page-link {
+  border-radius: 0.5rem;
+  margin: 0 3px;
+  color: #495057;
+  font-weight: 500;
+  font-size: 0.85rem;
+}
+
+.pagination .page-link:hover {
+  background-color: #0d6efd;
+  color: #fff;
+}
+
+.pagination .page-item.active .page-link {
+  background-color: #0d6efd;
+  border-color: #0d6efd;
+  color: #fff;
+}
+
+/* ==========================
+   RESPONSIVE
+   ========================== */
+@media (max-width: 768px) {
+  .upload-btn {
+    width: 100%;
+    margin-top: 10px;
+  }
+
+  .search-filter-card input,
+  .search-filter-card select,
+  .search-filter-card button {
+    width: 100%;
+    margin-bottom: 8px;
+  }
+
+  .autocomplete-suggestions {
+    font-size: 0.8rem;
+  }
+}
+
+/* ==========================
+   MORE FILTERS DROPDOWN
+   ========================== */
+.dropdown-toggle-filter {
+  background-color: #f97316 !important;
+  border-color: #f97316 !important;
+  color: white !important;
+}
+
+.dropdown-toggle-filter:hover {
+  background-color: #e6630d !important;
+  border-color: #e6630d !important;
+  transform: none !important;
+  box-shadow: none;
+}
+
+.dropdown-menu.p-3 {
+  border-radius: 12px;
+  border: 1px solid #e1e4eb;
+  background-color: #f8f9fc;
+  box-shadow: 0px 4px 20px rgba(0,0,0,0.08);
+  padding: 16px !important;
+  min-width: 280px;
+  max-height: 0;
+  opacity: 0;
+  overflow: hidden;
+  transform: translateY(-10px);
+  transition: max-height 0.35s ease, opacity 0.25s ease, transform 0.25s ease;
+}
+
+.dropdown-menu.show.p-3 {
+  max-height: 500px;
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.dropdown-menu.p-3 .form-group {
+  margin-bottom: 12px;
+}
+
+.dropdown-menu.p-3 .form-group label {
+  font-size: 0.82rem;
+  font-weight: 400;
+  color: #495057;
+  margin-bottom: 4px;
+}
+
+.dropdown-menu.p-3 select,
+.dropdown-menu.p-3 input {
+  height: 36px;
+  font-size: 0.82rem;
+  padding: 6px 10px;
+  border-radius: 6px;
+  border: 1px solid #ced4da;
+  background-color: #fff;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.dropdown-menu.p-3 select:focus,
+.dropdown-menu.p-3 input:focus {
+  border-color: #FF6B00;
+  box-shadow: 0 0 0 3px rgba(255,107,0,0.2);
+  outline: none;
+}
+
+.dropdown-menu.p-3 button {
+  font-size: 0.82rem;
+  font-weight: 600;
+  border-radius: 6px;
+  padding: 6px 12px;
+  margin-top: 6px;
+  background-color: #f97316 !important;
+  border-color: #f97316 !important;
+  color: white !important;
+}
+
+.dropdown-menu.p-3 button:hover {
+  background-color: #e6630d !important;
+  border-color: #e6630d !important;
+  transform: none !important;
+  box-shadow: none;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .dropdown-menu.p-3 {
+    min-width: 100% !important;
+    padding: 12px !important;
+  }
+}
+
+/* ==========================
+   SCROLLBAR
+   ========================== */
+.table-modern tbody::-webkit-scrollbar {
+  width: 8px;
+}
+
+.table-modern tbody::-webkit-scrollbar-thumb {
+  background-color: rgba(0,0,0,0.15);
+  border-radius: 4px;
+}
+
+.table-modern tbody::-webkit-scrollbar-track {
+  background-color: transparent;
+}
+
+.display-flex-vertical {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.table-wrapper {
+  flex: 1;
+  overflow-y: auto;
+}
+
+/* ==========================
+   DISABLE ALL HOVER EFFECTS
+   ========================== */
+.custom-card:hover,
+.custom-card-header:hover,
+.custom-card-search:hover,
+.custom-card-list:hover {
+  transform: none !important;
+  background-color: none !important;
+}
+
+/* ==============================
+   CUSTOM DELETE MODAL STYLES
+============================== */
+
+.custom-delete-modal .modal-content {
+  border-radius: 4px; /* rectangle */
+  padding: 1rem;
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+  font-size: 0.95rem;
+}
+
+.custom-delete-modal .modal-header {
+  padding: 1rem 1rem 0.5rem 1rem;
+}
+
+.custom-delete-modal .modal-body {
+  padding: 0.5rem 1rem 1rem 1rem;
+}
+
+.custom-delete-modal .modal-body p {
+  line-height: 1.5;
+  margin-bottom: 0.5rem;
+}
+
+.custom-delete-modal .btn-cancel {
+  background-color: #ff9f43; /* Orange */
+  border: none;
+  color: white;
+  padding: 0.45rem 1.25rem;
+  border-radius: 4px;
+  transition: 0.2s;
+}
+
+.custom-delete-modal .btn-cancel:hover {
+  background-color: #ffb25a;
+  color: white;
+}
+
+.custom-delete-modal .btn-delete {
+  background-color: #28a745; /* Green */
+  border: none;
+  color: white;
+  padding: 0.45rem 1.25rem;
+  border-radius: 4px;
+  transition: 0.2s;
+}
+
+.custom-delete-modal .btn-delete:hover {
+  background-color: #45c85a;
+  color: white;
+}
+
+.custom-delete-modal .text-warning {
+  color: #fd7e14 !important; /* Orange warning icon */
+}

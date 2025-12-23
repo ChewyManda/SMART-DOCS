@@ -1,0 +1,250 @@
+/* ==========================
+   DOCUMENT VIEW CSS
+   ========================== */
+
+.document-view-container {
+  padding: 25px 60px 25px 85px !important; 
+  background: #f8f9fb;
+  min-height: 100vh;
+  transition: none !important;
+}
+
+@media (max-width: 992px) {
+  .document-view-container {
+    padding: 20px 20px 40px 20px;
+  }
+}
+
+/* ==========================
+   DOC INFO CARD
+   ========================== */
+.doc-info-card {
+  border-radius: 12px;
+  background-color: #ffffff;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 400px; /* slightly smaller */
+}
+
+.doc-info-card:hover, .recepients-card:hover,
+.activity-card:hover, .qr-card:hover {
+  transform: none !important;
+}
+
+.doc-info-card h2 {
+  font-size: 26px;
+  margin-bottom: 10px;
+}
+
+.doc-info-card p.text-muted {
+  font-size: 14px;
+}
+
+.doc-info-card .d-flex.gap-3 span {
+  font-size: 14px;
+}
+
+.doc-info-card .btn {
+  font-size: 14px;
+  padding: 6px 14px;
+}
+
+.dropdown-qr-actions {
+  background-color: #f97316 !important;
+  border-color: #f97316 !important;
+  color: white !important;
+}
+
+.dropdown-qr-actions:hover {
+  background-color: #e6630d !important;
+  border-color: #e6630d !important;
+  transform: none !important;
+  box-shadow: none;
+}
+
+.doc-info-card .badge {
+  font-size: 13px;
+}
+
+/* ==========================
+   RECIPIENTS CARD
+   ========================== */
+.recepients-card {
+  border-radius: 12px;
+  padding: 0;
+  background-color: #ffffff;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+}
+
+.recepients-card .card-header h5 {
+  font-size: 18px;
+}
+
+.recepients-card table {
+  margin-bottom: 0;
+  font-size: 14px;
+}
+
+.recepients-card table th, 
+.recepients-card table td {
+  vertical-align: middle;
+}
+
+/* ==========================
+   QR CARD
+   ========================== */
+.qr-card {
+  border-radius: 12px;
+  background-color: #ffffff;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 400px; /* maintain same height as doc-info */
+  z-index: 1;
+}
+
+.qr-card .card-header h5 {
+  font-size: 18px;
+}
+
+.qr-card .d-grid button {
+  font-size: 13px;
+}
+
+/* ==========================
+   ACTIVITY CARD
+   ========================== */
+.activity-card {
+  border-radius: 12px;
+  padding: 0;
+  background-color: #ffffff;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+}
+
+.activity-card .card-header h5 {
+  font-size: 18px;
+}
+
+.activity-card .d-flex.mb-3 {
+  gap: 12px;
+}
+
+.activity-card .d-flex.mb-3 .bg-primary {
+  font-size: 16px;
+}
+
+/* ==========================
+   GENERAL BUTTONS
+   ========================== */
+.btn-primary, .btn-success, .btn-outline-primary, .btn-outline-secondary {
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.btn-primary:hover {
+  background-color: #004085;
+  color: #fff;
+}
+
+.btn-outline-primary:hover {
+  background-color: #0d6efd;
+  color: #fff;
+}
+
+.btn-outline-secondary:hover {
+  background-color: #6c757d;
+  color: #fff;
+}
+
+.back-btn {
+  background-color: #f97316 !important;
+  border-color: #f97316 !important;
+  color: white !important;
+}
+
+.back-btn:hover {
+  background-color: #e6630d !important;
+  border-color: #e6630d !important;
+  transform: none !important;
+  box-shadow: none;
+}
+
+/* Search button */
+.download-btn {
+  background-color: #16a34a !important;
+  border-color: #16a34a !important;
+  color: white !important;
+}
+.download-btn:hover {
+  background-color: #128c3f !important;
+  border-color: #128c3f !important;
+  transform: none;
+  box-shadow: none;
+}
+
+/* ==========================
+   ALERT
+   ========================== */
+.alert-success {
+  border-radius: 8px;
+  font-size: 14px;
+}
+
+/* ==========================
+   TABLE
+   ========================== */
+.table-hover tbody tr:hover {
+  background-color: #f1f1f1;
+}
+
+/* ==========================
+   BADGES
+   ========================== */
+.badge {
+  font-size: 13px;
+  border-radius: 6px;
+  padding: 4px 8px;
+}
+
+/* ==========================
+   MEDIA QUERIES
+   ========================== */
+@media (max-width: 992px) {
+  .qr-card {
+    position: relative;
+    top: 0;
+    margin-bottom: 20px;
+    min-height: auto !important;
+    padding: 20px; /* adjust for mobile */
+  }
+
+  .doc-info-card, .recepients-card, .activity-card {
+    margin-bottom: 20px;
+    min-height: auto !important;
+  }
+}
+
+/* ==========================
+   FLEX WRAPPER FOR LAYOUT
+   ========================== */
+.document-view-row {
+  display: flex;
+  gap: 20px;
+  align-items: stretch; /* stretch columns to same height */
+}
+
+.document-view-row .left-column {
+  flex: 2; /* doc info and activity cards */
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.document-view-row .right-column {
+  flex: 1.1; /* slightly bigger QR card column */
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}

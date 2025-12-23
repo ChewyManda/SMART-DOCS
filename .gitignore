@@ -1,0 +1,61 @@
+# -------------------------------
+# Laravel / PHP
+# -------------------------------
+
+# Environment files
+.env
+.env.backup
+.env.production
+
+# Composer vendor
+/vendor
+
+# Laravel storage (except .gitignore)
+storage/*.key
+storage/pail
+storage/logs/*
+storage/framework/cache/*
+storage/framework/sessions/*
+storage/framework/views/*
+
+# User uploads
+storage/app/public/*
+!storage/app/public/.gitignore
+
+# Laravel public storage symlink
+/public/storage
+
+# Build and cache
+/public/build
+/public/hot
+
+# PHPUnit / testing
+.phpunit.result.cache
+.phpactor.json
+/.phpunit.cache
+
+# Homestead / virtual machine
+Homestead.json
+Homestead.yaml
+
+# -------------------------------
+# Node / React / Frontend
+# -------------------------------
+/node_modules
+/build
+/dist
+
+# -------------------------------
+# IDEs / Editors / System
+# -------------------------------
+.DS_Store
+Thumbs.db
+/.vscode
+/.idea
+/.fleet
+/.zed
+/.nova
+/auth.json
+
+# Logs
+*.log

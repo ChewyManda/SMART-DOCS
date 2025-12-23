@@ -1,0 +1,175 @@
+/* ==========================
+   FILE VIEW CONTAINER
+   ========================== */
+.fileview-container {
+  padding: 25px 60px 25px 85px;
+  background: #f8f9fb;
+  min-height: 100vh;
+  transition: padding 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+@media (max-width: 992px) {
+  .fileview-container {
+    padding: 50px 20px 40px 20px;
+  }
+}
+
+/* ==========================
+   TOOLBAR (consistent card style)
+   ========================== */
+.fileview-toolbar {
+  display: flex;
+  gap: 12px;
+  background: #fff;
+  padding: 12px 18px;
+  border-radius: 12px;
+  box-shadow: 0px 6px 30px rgba(0,0,0,0.08);
+  border: 1px solid #e9ecef;
+  margin-bottom: 20px;
+  transform: none !important; /* remove hover effect */
+}
+
+/* ==========================
+   BUTTONS
+   ========================== */
+.fv-btn {
+  padding: 8px 16px;
+  background-color: #f8f9fa;
+  border: 1px solid #ced4da;
+  color: #212529;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.95rem;
+  font-weight: 500;
+  transition: none !important;
+  transform: none !important; /* remove hover effect */
+}
+
+.fv-btn:hover {
+  background-color: #e9ecef;
+  border-color: #ced4da;
+  transform: none !important;
+  box-shadow: none !important;
+}
+
+.back-btn {
+  background-color: #f97316 !important;
+  border-color: #f97316 !important;
+  color: white !important;
+}
+
+.back-btn:hover {
+  background-color: #e6630d !important;
+  border-color: #e6630d !important;
+  transform: none !important;
+  box-shadow: none !important;
+}
+
+/* ==========================
+   VIEWER BOX (white card style)
+   ========================== */
+.fileview-wrapper {
+  width: 95%;              /* WIDER */
+  max-width: 1400px;       /* WIDER */
+  height: 75vh;            /* slightly taller for better view */
+  background: #fff;
+  border-radius: 14px;
+  overflow: hidden;
+  border: 1px solid #e9ecef;
+  box-shadow: 0px 6px 30px rgba(0,0,0,0.08);
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transform: none !important; /* remove hover effect */
+}
+
+/* ==========================
+   DOCUMENT IFRAMES
+   ========================== */
+.fileview-iframe {
+  width: 100%;
+  height: 100%;
+  border: none;
+}
+
+/* ==========================
+   IMAGE FIT STYLING
+   ========================== */
+.fileview-image {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  display: block;
+}
+
+/* ==========================
+   STATUS TEXT
+   ========================== */
+.fileview-loading {
+  font-size: 1rem;
+  color: #6c757d;
+  text-align: center;
+}
+
+.fileview-error {
+  font-size: 1rem;
+  color: #dc3545;
+  text-align: center;
+}
+
+/* ==========================
+   MOBILE RESPONSIVE
+   ========================== */
+@media (max-width: 768px) {
+  .fileview-wrapper {
+    width: 100%;
+    height: 60vh;
+  }
+
+  .fv-btn {
+    width: 100%;
+  }
+
+  .fileview-toolbar {
+    flex-direction: column;
+    width: 100%;
+  }
+}
+
+/* ==========================
+   OVERRIDE TRANSFORMS
+   ========================== */
+.fileview-toolbar,
+.fileview-wrapper,
+.fv-btn {
+  transform: none !important;
+  transition: none !important;
+}
+
+.file-view-card:hover,
+.fileview-wrapper:hover,
+.fv-btn:hover {
+  transform: none !important;
+  transition: none !important;
+}
+
+.image-ocr-container {
+  position: relative;
+  user-select: text;
+}
+
+.ocr-word {
+  position: absolute;
+  color: transparent;               /* Invisible text */
+  background: rgba(0, 255, 0, 0.15);
+  font-size: 16px;
+  line-height: 1.2;
+  white-space: nowrap;
+
+  user-select: text;                /* ✅ Enable copy */
+  pointer-events: auto;
+}

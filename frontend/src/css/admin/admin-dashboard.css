@@ -1,0 +1,385 @@
+/* ==========================
+   PAGE CONTAINER
+   ========================== */
+.admin-dashboard-container {
+  padding: 25px 60px 25px 85px;
+  background: #f8f9fb;
+  min-height: 100vh;
+}
+
+@media (max-width: 992px) {
+  .admin-dashboard-container {
+    padding: 20px 20px 40px 20px;
+  }
+}
+
+/* ==========================
+   PAGE HEADER
+   ========================== */
+.page-header {
+  margin-bottom: 20px;
+}
+
+.dashboard-title {
+  font-weight: 800;
+  font-size: 2rem;
+  color: #212529;
+}
+
+.dashboard-subtitle {
+  margin-top: -6px;
+  font-size: 0.95rem;
+  color: #6c757d;
+}
+
+/* ==========================
+   STAT CARDS
+   ========================== */
+.stats-row {
+  margin-bottom: 30px;
+}
+
+.stats-card {
+  padding: 22px;
+  border-radius: 16px;
+  background: white;
+  border: none;
+  text-align: center;
+  cursor: pointer;
+  box-shadow: 0px 6px 16px rgba(0,0,0,0.05);
+  transition: box-shadow 0.15s ease !important;
+  transform: none !important;
+}
+
+.stats-card:hover {
+  box-shadow: 0px 10px 22px rgba(0,0,0,0.12) !important;
+  transform: none !important;
+}
+
+.stats-icon {
+  width: 58px;
+  height: 58px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 12px;
+  color: white;
+  font-size: 1.6rem;
+}
+
+.bg-green { background: #16a34a; }
+.bg-orange { background: #f97316; }
+.bg-blue { background: #0d6efd; }
+.bg-teal { background: #0dcaf0; }
+
+.stats-card h3 {
+  font-weight: 800;
+  margin-bottom: 5px;
+  font-size: 1.6rem;
+}
+
+.stats-card p {
+  color: #6c757d;
+  font-size: 0.9rem;
+}
+
+@media (max-width: 768px) {
+  .stats-card {
+    padding: 18px;
+  }
+  .stats-icon {
+    width: 52px;
+    height: 52px;
+    font-size: 1.4rem;
+  }
+  .stats-card h3 {
+    font-size: 1.4rem;
+  }
+}
+
+/* ==========================
+   CUSTOM CARDS
+   ========================== */
+.custom-card-recent,
+.custom-card-activities {
+  border-radius: 14px;
+  background: white;
+  border: none;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  height: 450px;
+  box-shadow: 0px 6px 16px rgba(0,0,0,0.05);
+  transition: box-shadow 0.15s ease !important;
+}
+
+.custom-card-recent:hover,
+.custom-card-activities:hover {
+  box-shadow: 0px 10px 22px rgba(0,0,0,0.12) !important;
+  transform: none !important;
+}
+
+.recent-body {
+  height: 330px;
+  overflow-y: auto;
+}
+
+/* Keep inner elements from triggering shadows */
+.custom-card-recent *,
+.custom-card-activities *,
+.custom-card-recent *::before,
+.custom-card-recent *::after,
+.custom-card-activities *::before,
+.custom-card-activities *::after {
+  box-shadow: none !important;
+  transform: none !important;
+}
+
+/* ==========================
+   CARD HEADERS
+   ========================== */
+.custom-card-header-recent,
+.custom-card-header-activities {
+  background: white !important;
+  border-bottom: 1px solid #eee;
+  padding: 16px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-weight: 500;
+}
+
+/* Actual card titles */
+.custom-card-header-recent h5, 
+.custom-card-header-activities h5 {
+  font-weight: 600;
+  font-size: 1.07rem;
+  color: #212529;
+}
+
+/* ==========================
+   TABLE TYPOGRAPHY HIERARCHY
+   ========================== */
+
+/* Column headers */
+.dashboard-table thead th {
+  font-weight: 600; /* SEMI-BOLD */
+  font-size: 14px;
+  color: #444;
+  text-transform: uppercase;
+  background: #fafafa;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+/* Table cells */
+.dashboard-table tbody td {
+  font-weight: 400;  /* NORMAL */
+  font-size: 14px;
+  color: #333;
+}
+
+/* ID + Uploader + Title stronger */
+.dashboard-table tbody td:nth-child(1),
+.dashboard-table tbody td:nth-child(2),
+.dashboard-table tbody td:nth-child(3) {
+  font-weight: 500; /* MEDIUM */
+}
+
+/* ==========================
+   TABLE WRAPPER + PAGINATION FIX
+   ========================== */
+.table-wrapper {
+  max-height: 330px;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.table-pagination {
+  margin-top: 8px;
+  padding-bottom: 5px;
+}
+
+/* disable hover shadows */
+.dashboard-table.table-hover tbody tr:hover,
+.dashboard-table.table-hover tbody tr:active,
+.dashboard-table.table-hover tbody tr:focus,
+.table-hover > tbody > tr:hover > * {
+  background-color: #ffffff !important;
+  transform: none !important;
+  box-shadow: none !important;
+}
+
+/* ==========================
+   ACTIVITY LIST
+   ========================== */
+.activity-item {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 12px;
+  padding: 12px;
+  border-radius: 14px;
+  background: white;
+  border: 1px solid #f1f3f5;
+}
+
+.activity-icon {
+  width: 45px;
+  height: 45px;
+  background: #e9ecef;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 1.2rem;
+}
+
+.activity-body {
+  max-height: 330px;
+  overflow-y: auto;
+  padding-left: 8px;
+}
+
+/* Activity text hierarchy */
+.activity-text p {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 400;
+}
+
+.activity-text p strong {
+  font-weight: 600; /* SEMI-BOLD */
+}
+
+.activity-text small {
+  font-size: 12px;
+  color: #777;
+}
+
+/* ==========================
+   LOADING SECTION
+   ========================== */
+.dashboard-loading {
+  padding-top: 120px;
+  text-align: center;
+}
+
+.dashboard-loading p {
+  color: #6c757d;
+  margin-top: 10px;
+}
+
+/* ==========================
+   SCROLLBAR
+   ========================== */
+.activity-body::-webkit-scrollbar,
+.table-wrapper::-webkit-scrollbar {
+  width: 8px;
+}
+
+.activity-body::-webkit-scrollbar-thumb,
+.table-wrapper::-webkit-scrollbar-thumb {
+  background: rgba(0,0,0,0.2);
+  border-radius: 20px;
+}
+
+/* ==========================
+   MOBILE FIXES
+   ========================== */
+@media (max-width: 576px) {
+  .dashboard-title {
+    font-size: 1.6rem;
+  }
+  .custom-card-header-recent,
+  .custom-card-header-activities {
+    flex-direction: column;
+    text-align: center;
+    gap: 10px;
+  }
+}
+
+/* ==========================
+   BUTTON SYSTEM (GREEN + ORANGE)
+   ========================== */
+.btn,
+.btn-primary,
+.btn-success,
+.btn-info {
+  background-color: #16a34a !important;
+  border-color: #16a34a !important;
+  color: white !important;
+}
+
+.btn-warning {
+  background-color: #f97316 !important;
+  border-color: #f97316 !important;
+  color: white !important;
+}
+
+.btn-warning:hover {
+  background-color: #e6630d !important;
+  border-color: #e6630d !important;
+}
+
+.btn:hover,
+.btn-primary:hover,
+.btn-success:hover,
+.btn-info:hover {
+  background-color: #128c3f !important;
+  border-color: #128c3f !important;
+}
+
+/* ==========================
+   EYE BUTTON SPECIFIC (ORANGE)
+   ========================== */
+.btn-eye-orange {
+  background-color: #f97316 !important;
+  border-color: #f97316 !important;
+  color: white !important;
+}
+
+.btn-eye-orange:hover {
+  background-color: #e6630d !important;
+  border-color: #e6630d !important;
+}
+
+/* ==========================
+   PAGINATION CUSTOM COLORS
+   ========================== */
+.pagination .page-item.active .page-link {
+  background-color: #f97316 !important;
+  border-color: #f97316 !important;
+  color: white !important;
+}
+
+.pagination .page-item:not(.active) .page-link:hover {
+  background-color: #f97316 !important;
+  color: white !important;
+  border-color: #f97316 !important;
+}
+
+.pagination .page-item .page-link {
+  border-color: #ddd;
+}
+
+.pagination .page-item.disabled .page-link {
+  color: #aaa !important;
+  background-color: #fff !important;
+  border-color: #ddd !important;
+}
+
+/* ==========================
+   FIXED COLUMN SIZES FOR RECENT DOCUMENTS
+   ========================== */
+.custom-card-recent .dashboard-table th:nth-child(1),
+.custom-card-recent .dashboard-table td:nth-child(1) { width: 120px; }  /* ID */
+.custom-card-recent .dashboard-table th:nth-child(2),
+.custom-card-recent .dashboard-table td:nth-child(2) { width: 220px; }  /* Title */
+.custom-card-recent .dashboard-table th:nth-child(3),
+.custom-card-recent .dashboard-table td:nth-child(3) { width: 140px; }  /* Uploader */
+.custom-card-recent .dashboard-table th:nth-child(4),
+.custom-card-recent .dashboard-table td:nth-child(4) { width: 100px; }  /* Status */
+.custom-card-recent .dashboard-table th:nth-child(5),
+.custom-card-recent .dashboard-table td:nth-child(5) { width: 150px; }  /* Date */
+.custom-card-recent .dashboard-table th:nth-child(6),
+.custom-card-recent .dashboard-table td:nth-child(6) { width: 60px; text-align: center; } /* Action */
