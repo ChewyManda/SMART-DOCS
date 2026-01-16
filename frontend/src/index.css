@@ -1,3 +1,6 @@
+/* Import global button system for consistent styling */
+@import './css/global/buttons.css';
+
 body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',

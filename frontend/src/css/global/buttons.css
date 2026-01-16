@@ -1,0 +1,625 @@
+/* ==========================
+   GLOBAL BUTTON SYSTEM
+   Consistent buttons across all pages and components
+   
+   COLOR PALETTE:
+   - Primary (Green): #16a34a (hover: #15803d)
+   - Secondary (Orange): #f97316 (hover: #ea580c)
+   - Danger (Red): #ef4444 (hover: #dc2626)
+   - Light: #f8fafc (hover: #f1f5f9)
+   ========================== */
+
+/* ==========================
+   BASE BUTTON STYLES
+   ========================== */
+.btn {
+  font-weight: 500;
+  border-radius: 6px;
+  padding: 8px 16px;
+  font-size: 0.9375rem;
+  transition: background-color 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+  border: 1px solid transparent;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  line-height: 1.5;
+  text-decoration: none;
+}
+
+.btn:focus {
+  outline: none;
+}
+
+.btn:disabled,
+.btn.disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+/* ==========================
+   PRIMARY BUTTONS - GREEN
+   Main actions: Submit, Save, Create, Confirm
+   ========================== */
+.btn-primary,
+.btn-success,
+.btn-info {
+  background-color: #16a34a !important;
+  border-color: #16a34a !important;
+  color: white !important;
+}
+
+.btn-primary:hover:not(:disabled),
+.btn-success:hover:not(:disabled),
+.btn-info:hover:not(:disabled) {
+  background-color: #15803d !important;
+  border-color: #15803d !important;
+  color: white !important;
+}
+
+.btn-primary:focus,
+.btn-success:focus,
+.btn-info:focus {
+  background-color: #16a34a !important;
+  border-color: #16a34a !important;
+  box-shadow: 0 0 0 3px rgba(22, 163, 74, 0.25) !important;
+}
+
+.btn-primary:active:not(:disabled),
+.btn-success:active:not(:disabled),
+.btn-info:active:not(:disabled) {
+  background-color: #15803d !important;
+  border-color: #15803d !important;
+}
+
+/* ==========================
+   SECONDARY BUTTONS - ORANGE
+   Secondary actions: View, Edit, Back, Cancel
+   ========================== */
+.btn-secondary,
+.btn-warning {
+  background-color: #f97316 !important;
+  border-color: #f97316 !important;
+  color: white !important;
+}
+
+.btn-secondary:hover:not(:disabled),
+.btn-warning:hover:not(:disabled) {
+  background-color: #ea580c !important;
+  border-color: #ea580c !important;
+  color: white !important;
+}
+
+.btn-secondary:focus,
+.btn-warning:focus {
+  background-color: #f97316 !important;
+  border-color: #f97316 !important;
+  box-shadow: 0 0 0 3px rgba(249, 115, 22, 0.25) !important;
+}
+
+.btn-secondary:active:not(:disabled),
+.btn-warning:active:not(:disabled) {
+  background-color: #ea580c !important;
+  border-color: #ea580c !important;
+}
+
+/* ==========================
+   DANGER BUTTONS - RED
+   Destructive actions: Delete, Remove, Reject
+   ========================== */
+.btn-danger {
+  background-color: #ef4444 !important;
+  border-color: #ef4444 !important;
+  color: white !important;
+}
+
+.btn-danger:hover:not(:disabled) {
+  background-color: #dc2626 !important;
+  border-color: #dc2626 !important;
+  color: white !important;
+}
+
+.btn-danger:focus {
+  background-color: #ef4444 !important;
+  border-color: #ef4444 !important;
+  box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.25) !important;
+}
+
+.btn-danger:active:not(:disabled) {
+  background-color: #dc2626 !important;
+  border-color: #dc2626 !important;
+}
+
+/* ==========================
+   LIGHT BUTTON
+   Subtle actions in cards/modals
+   ========================== */
+.btn-light {
+  background-color: #f8fafc !important;
+  border-color: #e2e8f0 !important;
+  color: #475569 !important;
+}
+
+.btn-light:hover:not(:disabled) {
+  background-color: #f1f5f9 !important;
+  border-color: #cbd5e1 !important;
+  color: #334155 !important;
+}
+
+.btn-light:focus {
+  background-color: #f8fafc !important;
+  border-color: #e2e8f0 !important;
+  box-shadow: 0 0 0 3px rgba(148, 163, 184, 0.25) !important;
+}
+
+/* ==========================
+   OUTLINE BUTTONS - PRIMARY (GREEN)
+   ========================== */
+.btn-outline-primary,
+.btn-outline-success {
+  background-color: transparent !important;
+  border-color: #16a34a !important;
+  color: #16a34a !important;
+}
+
+.btn-outline-primary:hover:not(:disabled),
+.btn-outline-success:hover:not(:disabled) {
+  background-color: #16a34a !important;
+  border-color: #16a34a !important;
+  color: white !important;
+}
+
+.btn-outline-primary:focus,
+.btn-outline-success:focus {
+  background-color: transparent !important;
+  border-color: #16a34a !important;
+  box-shadow: 0 0 0 3px rgba(22, 163, 74, 0.25) !important;
+}
+
+/* ==========================
+   OUTLINE BUTTONS - SECONDARY (ORANGE)
+   ========================== */
+.btn-outline-secondary,
+.btn-outline-warning {
+  background-color: transparent !important;
+  border-color: #f97316 !important;
+  color: #f97316 !important;
+}
+
+.btn-outline-secondary:hover:not(:disabled),
+.btn-outline-warning:hover:not(:disabled) {
+  background-color: #f97316 !important;
+  border-color: #f97316 !important;
+  color: white !important;
+}
+
+.btn-outline-secondary:focus,
+.btn-outline-warning:focus {
+  background-color: transparent !important;
+  border-color: #f97316 !important;
+  box-shadow: 0 0 0 3px rgba(249, 115, 22, 0.25) !important;
+}
+
+/* ==========================
+   OUTLINE BUTTONS - DANGER (RED)
+   ========================== */
+.btn-outline-danger {
+  background-color: transparent !important;
+  border-color: #ef4444 !important;
+  color: #ef4444 !important;
+}
+
+.btn-outline-danger:hover:not(:disabled) {
+  background-color: #ef4444 !important;
+  border-color: #ef4444 !important;
+  color: white !important;
+}
+
+.btn-outline-danger:focus {
+  background-color: transparent !important;
+  border-color: #ef4444 !important;
+  box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.25) !important;
+}
+
+/* ==========================
+   OUTLINE BUTTONS - LIGHT
+   ========================== */
+.btn-outline-light {
+  background-color: transparent !important;
+  border-color: #e2e8f0 !important;
+  color: #475569 !important;
+}
+
+.btn-outline-light:hover:not(:disabled) {
+  background-color: #f8fafc !important;
+  border-color: #cbd5e1 !important;
+  color: #334155 !important;
+}
+
+/* ==========================
+   BUTTON SIZES
+   ========================== */
+.btn-sm {
+  padding: 6px 12px;
+  font-size: 0.8125rem;
+  border-radius: 5px;
+}
+
+.btn-lg {
+  padding: 12px 24px;
+  font-size: 1rem;
+  border-radius: 8px;
+}
+
+/* ==========================
+   ICON BUTTONS
+   ========================== */
+.btn-icon {
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.btn-icon.btn-sm {
+  width: 32px;
+  height: 32px;
+}
+
+.btn-icon.btn-lg {
+  width: 48px;
+  height: 48px;
+}
+
+/* ==========================
+   FULL WIDTH BUTTON
+   ========================== */
+.btn-block {
+  width: 100%;
+}
+
+/* ==========================
+   BUTTON GROUP
+   ========================== */
+.btn-group .btn {
+  border-radius: 0;
+}
+
+.btn-group .btn:first-child {
+  border-top-left-radius: 6px;
+  border-bottom-left-radius: 6px;
+}
+
+.btn-group .btn:last-child {
+  border-top-right-radius: 6px;
+  border-bottom-right-radius: 6px;
+}
+
+/* ==========================
+   LOADING STATE
+   ========================== */
+.btn .spinner-border {
+  width: 1em;
+  height: 1em;
+  border-width: 0.15em;
+}
+
+.btn-primary .spinner-border,
+.btn-success .spinner-border,
+.btn-secondary .spinner-border,
+.btn-warning .spinner-border,
+.btn-danger .spinner-border {
+  color: white;
+}
+
+/* ==========================
+   SPECIAL BUTTON VARIANTS
+   ========================== */
+
+/* View Button (Orange) - for table actions */
+.btn-view,
+.btn-eye-orange {
+  background-color: #f97316 !important;
+  border-color: #f97316 !important;
+  color: white !important;
+  padding: 6px 12px;
+}
+
+.btn-view:hover:not(:disabled),
+.btn-eye-orange:hover:not(:disabled) {
+  background-color: #ea580c !important;
+  border-color: #ea580c !important;
+}
+
+/* Back Button (Orange) */
+.back-btn {
+  background-color: #f97316 !important;
+  border-color: #f97316 !important;
+  color: white !important;
+}
+
+.back-btn:hover:not(:disabled) {
+  background-color: #ea580c !important;
+  border-color: #ea580c !important;
+}
+
+/* Upload Button (Green) */
+.upload-btn {
+  background-color: #16a34a !important;
+  border-color: #16a34a !important;
+  color: white !important;
+}
+
+.upload-btn:hover:not(:disabled) {
+  background-color: #15803d !important;
+  border-color: #15803d !important;
+}
+
+/* Download Button (Green) */
+.download-btn {
+  background-color: #16a34a !important;
+  border-color: #16a34a !important;
+  color: white !important;
+}
+
+.download-btn:hover:not(:disabled) {
+  background-color: #15803d !important;
+  border-color: #15803d !important;
+}
+
+/* Search Button (Green) */
+.btn-search,
+.custom-btn-search {
+  background-color: #16a34a !important;
+  border-color: #16a34a !important;
+  color: white !important;
+}
+
+.btn-search:hover:not(:disabled),
+.custom-btn-search:hover:not(:disabled) {
+  background-color: #15803d !important;
+  border-color: #15803d !important;
+}
+
+/* Cancel Button (Orange) */
+.btn-cancel {
+  background-color: #f97316 !important;
+  border-color: #f97316 !important;
+  color: white !important;
+}
+
+.btn-cancel:hover:not(:disabled) {
+  background-color: #ea580c !important;
+  border-color: #ea580c !important;
+}
+
+/* Delete Button (Red) */
+.btn-delete,
+.custom-btn-delete {
+  background-color: #ef4444 !important;
+  border-color: #ef4444 !important;
+  color: white !important;
+}
+
+.btn-delete:hover:not(:disabled),
+.custom-btn-delete:hover:not(:disabled) {
+  background-color: #dc2626 !important;
+  border-color: #dc2626 !important;
+}
+
+/* Toggle Button (Orange) */
+.btn-toggle,
+.custom-btn-toggle {
+  background-color: #f97316 !important;
+  border-color: #f97316 !important;
+  color: white !important;
+}
+
+.btn-toggle:hover:not(:disabled),
+.custom-btn-toggle:hover:not(:disabled) {
+  background-color: #ea580c !important;
+  border-color: #ea580c !important;
+}
+
+/* View All Button (Small - Orange outline) */
+.btn-view-all {
+  font-size: 0.8125rem !important;
+  padding: 4px 12px !important;
+  background-color: transparent !important;
+  border-color: #f97316 !important;
+  color: #f97316 !important;
+}
+
+.btn-view-all:hover:not(:disabled) {
+  background-color: #f97316 !important;
+  color: white !important;
+}
+
+/* Create Button (Green) */
+.user-create-btn,
+.create-btn {
+  background-color: #16a34a !important;
+  border-color: #16a34a !important;
+  color: white !important;
+}
+
+.user-create-btn:hover:not(:disabled),
+.create-btn:hover:not(:disabled) {
+  background-color: #15803d !important;
+  border-color: #15803d !important;
+}
+
+/* Add More Files Button (Green dashed outline) */
+.add-more-files-btn {
+  border: 2px dashed #16a34a !important;
+  background-color: #f0fdf4 !important;
+  color: #16a34a !important;
+  font-weight: 600;
+  padding: 12px 20px;
+  border-radius: 8px;
+}
+
+.add-more-files-btn:hover:not(:disabled) {
+  background-color: #16a34a !important;
+  color: #ffffff !important;
+  border-color: #16a34a !important;
+  box-shadow: 0 4px 12px 0 rgba(22, 163, 74, 0.2);
+}
+
+/* ==========================
+   DROPDOWN BUTTONS
+   ========================== */
+.dropdown-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.dropdown-toggle::after {
+  margin-left: 0.5em;
+  vertical-align: middle;
+}
+
+/* Dropdown filter toggle (Orange) */
+.dropdown-toggle-filter {
+  background-color: #f97316 !important;
+  border-color: #f97316 !important;
+  color: white !important;
+}
+
+.dropdown-toggle-filter:hover:not(:disabled),
+.dropdown-toggle-filter.show {
+  background-color: #ea580c !important;
+  border-color: #ea580c !important;
+}
+
+.dropdown-toggle-filter:focus {
+  box-shadow: 0 0 0 3px rgba(249, 115, 22, 0.25) !important;
+}
+
+/* QR Dropdown (Orange) */
+.dropdown-qr-actions {
+  background-color: #f97316 !important;
+  border-color: #f97316 !important;
+  color: white !important;
+}
+
+.dropdown-qr-actions:hover:not(:disabled) {
+  background-color: #ea580c !important;
+  border-color: #ea580c !important;
+}
+
+/* ==========================
+   FILE VIEW BUTTONS
+   ========================== */
+.fv-btn {
+  padding: 8px 16px;
+  background-color: #16a34a !important;
+  border-color: #16a34a !important;
+  color: white !important;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.9375rem;
+  font-weight: 500;
+}
+
+.fv-btn:hover:not(:disabled) {
+  background-color: #15803d !important;
+  border-color: #15803d !important;
+}
+
+/* ==========================
+   CLOSE BUTTON
+   ========================== */
+.btn-close {
+  opacity: 0.5;
+  transition: opacity 0.2s ease;
+}
+
+.btn-close:hover {
+  opacity: 1;
+}
+
+/* ==========================
+   LOGIN BUTTON (Special gradient)
+   ========================== */
+.login-btn {
+  background: linear-gradient(135deg, #16a34a 0%, #22c55e 100%);
+  border: none;
+  padding: 14px 24px;
+  font-weight: 700;
+  font-size: 1.05rem;
+  border-radius: 12px;
+  color: #fff;
+  width: 100%;
+  box-shadow: 0 4px 12px rgba(22, 163, 74, 0.3);
+  letter-spacing: 0.3px;
+}
+
+.login-btn:hover:not(:disabled) {
+  background: linear-gradient(135deg, #15803d 0%, #16a34a 100%);
+  box-shadow: 0 6px 20px rgba(22, 163, 74, 0.4);
+  color: #fff;
+}
+
+.login-btn:focus,
+.login-btn:active {
+  background: linear-gradient(135deg, #15803d 0%, #16a34a 100%) !important;
+  color: #fff !important;
+  box-shadow: 0 4px 16px rgba(22, 163, 74, 0.5) !important;
+}
+
+.login-btn:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+  box-shadow: 0 2px 8px rgba(22, 163, 74, 0.2);
+}
+
+/* ==========================
+   LINK BUTTONS
+   ========================== */
+.btn-link {
+  background: transparent !important;
+  border: none !important;
+  color: #16a34a !important;
+  padding: 0;
+  font-weight: 500;
+  text-decoration: none;
+}
+
+.btn-link:hover:not(:disabled) {
+  color: #15803d !important;
+  text-decoration: underline;
+}
+
+.btn-link.text-danger {
+  color: #ef4444 !important;
+}
+
+.btn-link.text-danger:hover:not(:disabled) {
+  color: #dc2626 !important;
+}
+
+/* ==========================
+   RESPONSIVE ADJUSTMENTS
+   ========================== */
+@media (max-width: 768px) {
+  .btn {
+    padding: 10px 16px;
+    font-size: 0.875rem;
+  }
+
+  .btn-sm {
+    padding: 6px 10px;
+    font-size: 0.8125rem;
+  }
+
+  .btn-lg {
+    padding: 12px 20px;
+    font-size: 0.9375rem;
+  }
+}

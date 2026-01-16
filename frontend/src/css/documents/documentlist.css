@@ -2,31 +2,37 @@
    DOCUMENT LIST CONTAINER
    ========================== */
 .document-list-container {
-  padding: 25px 60px 25px 85px;
-  background: #f8f9fb;
+  padding: 32px 40px 40px 40px;
+  background: #f5f7fa;
   min-height: 100vh;
-  transition: none !important;
 }
 
 @media (max-width: 992px) {
   .document-list-container {
-    padding: 20px 20px 40px 20px;
+    padding: 24px 24px 32px 24px;
   }
 }
 
 /* ==========================
    PAGE HEADER
    ========================== */
+.page-header {
+  margin-bottom: 32px;
+}
+
 .page-header .dashboard-title {
-  font-size: 2rem;
   font-weight: 700;
-  color: #212529;
+  font-size: 2.25rem;
+  color: #1a1f2e;
+  letter-spacing: -0.02em;
+  margin-bottom: 8px;
 }
 
 .page-header .dashboard-subtitle {
-  font-size: 0.95rem;
-  color: #6c757d;
-  margin-top: 4px;
+  font-size: 1rem;
+  color: #64748b;
+  font-weight: 400;
+  margin: 0;
 }
 
 /* ==========================
@@ -36,31 +42,75 @@
   background-color: #16a34a !important;
   border-color: #16a34a !important;
   color: white !important;
+  font-weight: 500;
+  border-radius: 6px;
+  padding: 8px 16px;
+  transition: background-color 0.2s ease, border-color 0.2s ease !important;
 }
 
 .upload-btn-document-list:hover {
-  background-color: #128c3f !important;
-  border-color: #128c3f !important;
-  transform: none;
-  box-shadow: none;
+  background-color: #15803d !important;
+  border-color: #15803d !important;
 }
 
 /* ==========================
    SEARCH + FILTER CARD
    ========================== */
-.search-filter-card {
-  border-radius: 14px;
-  box-shadow: 0px 4px 20px rgba(0,0,0,0.05);
-  padding: 14px 18px;
+.custom-card-search {
+  border-radius: 12px;
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.04), 0 1px 2px 0 rgba(0, 0, 0, 0.02);
+  transition: box-shadow 0.2s ease, border-color 0.2s ease !important;
+}
+
+.custom-card-search:hover {
+  box-shadow: 0 4px 12px 0 rgba(0, 0, 0, 0.08), 0 2px 4px 0 rgba(0, 0, 0, 0.04) !important;
+  border-color: #cbd5e1 !important;
+}
+
+.custom-card-search .card-body {
+  padding: 20px 24px;
 }
 
 /* COMPACT FIELDS */
-.search-filter-card input,
-.search-filter-card select,
-.search-filter-card button {
-  height: 36px;
-  font-size: 0.82rem;
-  padding: 6px 10px;
+.custom-card-search input,
+.custom-card-search select,
+.custom-card-search button {
+  height: 40px;
+  font-size: 0.9375rem;
+  border-radius: 6px;
+  border: 1px solid #e2e8f0;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+/* Custom Select Dropdown Styling */
+.custom-card-search select {
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23475569' d='M6 9L1 4h10z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  background-size: 12px;
+  padding-right: 36px;
+  cursor: pointer;
+  background-color: #ffffff;
+}
+
+.custom-card-search select:hover {
+  border-color: #cbd5e1;
+}
+
+.custom-card-search input:focus,
+.custom-card-search select:focus {
+  border-color: #f97316;
+  box-shadow: 0 0 0 3px rgba(249, 115, 22, 0.1);
+  outline: none;
+}
+
+.custom-card-search select:focus {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23f97316' d='M6 9L1 4h10z'/%3E%3C/svg%3E");
 }
 
 /* Search button */
@@ -68,176 +118,321 @@
   background-color: #16a34a !important;
   border-color: #16a34a !important;
   color: white !important;
+  font-weight: 500;
+  transition: background-color 0.2s ease, border-color 0.2s ease !important;
 }
+
 .custom-btn-search:hover {
-  background-color: #128c3f !important;
-  border-color: #128c3f !important;
-  transform: none;
-  box-shadow: none;
+  background-color: #15803d !important;
+  border-color: #15803d !important;
 }
+
+/* ==========================
+   BUTTON SYSTEM
+   Note: Global button styles are imported from css/global/buttons.css
+   Only page-specific button overrides should be defined here
+   ========================== */
 
 /* ==========================
    AUTOCOMPLETE SUGGESTIONS
    ========================== */
 .autocomplete-suggestions {
   position: absolute;
-  top: 38px;
+  top: 42px;
   left: 0;
   right: 0;
   z-index: 1050;
-  background: #fff;
-  border: 1px solid #e1e4eb;
-  border-radius: 10px;
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
   max-height: 220px;
   overflow-y: auto;
-  box-shadow: 0px 4px 20px rgba(0,0,0,0.08);
-  padding: 8px 0;
-  margin-top: 2px;
+  box-shadow: 0 4px 12px 0 rgba(0, 0, 0, 0.08), 0 2px 4px 0 rgba(0, 0, 0, 0.04);
+  padding: 4px 0;
+  margin-top: 4px;
 }
 
 .autocomplete-suggestions li {
-  padding: 8px 12px;
+  padding: 10px 16px;
   cursor: pointer;
-  font-size: 0.82rem;
-  color: #495057;
+  font-size: 0.9375rem;
+  color: #334155;
+  transition: background-color 0.15s ease;
 }
 
 /* hover or keyboard active highlight */
-.autocomplete-suggestions li:hover,
+.autocomplete-suggestions li:hover {
+  background-color: #f8fafc;
+  color: #1e293b;
+  font-weight: 500;
+}
+
 .autocomplete-suggestions li.active {
-  background-color: #f1f3f5;
-  color: #212529;
+  background-color: #fff5f0;
+  color: #1e293b;
   font-weight: 500;
 }
 
 /* ==========================
    DOCUMENT TABLE CARD
    ========================== */
-.document-table-card {
-  border-radius: 14px;
-  box-shadow: 0px 4px 25px rgba(0,0,0,0.06);
+.custom-card-list {
+  border-radius: 12px;
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  display: flex;
+  flex-direction: column;
   overflow: hidden;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.04), 0 1px 2px 0 rgba(0, 0, 0, 0.02);
+  transition: box-shadow 0.2s ease, border-color 0.2s ease !important;
 }
 
-.document-table-card-header {
-  background-color: #ffffff;
-  padding: 15px 20px;
-  border-bottom: 1px solid #e9ecef;
+.custom-card-list:hover {
+  box-shadow: 0 4px 12px 0 rgba(0, 0, 0, 0.08), 0 2px 4px 0 rgba(0, 0, 0, 0.04) !important;
+  border-color: #cbd5e1 !important;
 }
 
-.document-table-card-footer {
+.custom-card-list-header {
+  background: #ffffff !important;
+  border-bottom: 1px solid #e2e8f0;
+  padding: 12px 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-weight: 500;
+  height: 48px;
+  box-sizing: border-box;
+}
+
+.custom-card-list-header h5 {
+  font-weight: 600;
+  font-size: 1rem;
+  color: #1a1f2e;
+  margin: 0;
+  letter-spacing: -0.01em;
+  display: flex;
+  align-items: center;
+  line-height: 1.2;
+}
+
+.custom-card-list-footer {
   background-color: #ffffff;
-  border-top: 1px solid #e9ecef;
-  padding: 12px 20px;
+  border-top: 1px solid #f1f5f9;
+  padding: 12px 24px;
 }
 
 /* ==========================
-   TABLE – MODERN STYLE
+   TABLE TYPOGRAPHY HIERARCHY
    ========================== */
-.table-modern {
-  width: 100%;
-  border-collapse: separate;
-  border-spacing: 0 6px;
-}
 
-.table-modern thead th {
-  background-color: #f8f9fa;
-  color: #495057;
+/* Column headers */
+.dashboard-table thead th {
   font-weight: 600;
-  border: none;
-  position: sticky;
-  top: 0;
-  z-index: 10;
+  font-size: 0.8125rem;
+  color: #475569;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  background: #f8fafc;
+  border-bottom: 2px solid #e2e8f0;
+  padding: 12px 16px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
-.table-modern tbody {
-  display: table-row-group; /* default */
+/* Table cells */
+.dashboard-table tbody td {
+  font-weight: 400;
+  font-size: 0.9375rem;
+  color: #334155;
+  padding: 16px;
+  border-bottom: 1px solid #f1f5f9;
+  vertical-align: middle;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
-.table-modern tbody tr {
-  background-color: #fff;
+/* ID + Title + Uploader stronger */
+.dashboard-table tbody td:nth-child(1),
+.dashboard-table tbody td:nth-child(2),
+.dashboard-table tbody td:nth-child(4) {
+  font-weight: 500;
+  color: #1e293b;
+}
+
+.dashboard-table tbody td code.id-big {
+  background: #f1f5f9;
+  color: #475569;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  font-family: 'SF Mono', 'Monaco', 'Inconsolata', 'Roboto Mono', monospace;
+}
+
+/* Table row hover */
+.dashboard-table tbody tr {
+  transition: background-color 0.15s ease;
+}
+
+.dashboard-table tbody tr.clickable-row {
   cursor: pointer;
 }
 
-.table-modern td,
-.table-modern th {
-  vertical-align: middle;
-  padding: 12px 15px;
+.dashboard-table tbody tr:hover {
+  background-color: #f8fafc !important;
 }
 
-/* Optional vertical scroll if needed */
+.dashboard-table.table-hover tbody tr:hover,
+.dashboard-table.table-hover tbody tr:focus,
+.table-hover > tbody > tr:hover > * {
+  background-color: #f8fafc !important;
+  box-shadow: none !important;
+}
+
+.dashboard-table.table-hover tbody tr:active,
+.dashboard-table tbody tr.active,
+.table-hover > tbody > tr.active > * {
+  background-color: #fff5f0 !important;
+  box-shadow: none !important;
+}
+
+/* Table wrapper */
 .table-wrapper {
-  max-height: 330px;
+  flex: 1;
   overflow-y: auto;
+  overflow-x: hidden;
+  width: 100%;
 }
 
 /* ==========================
    HIGHLIGHTED ROW
    ========================== */
 .highlight-row {
-  background-color: #fff3cd !important;
+  background-color: #fff5f0 !important;
 }
 
 /* ==========================
-   BADGES
+   UNACKNOWLEDGED DOCUMENT ROW
+   (Like unread email - bold and highlighted)
    ========================== */
-.badge {
+.dashboard-table tbody tr.unacknowledged-document {
+  background-color: #ffe4d6 !important;
+  font-weight: bold !important;
+}
+
+.dashboard-table tbody tr.unacknowledged-document td {
+  background-color: #ffe4d6 !important;
+  font-weight: bold !important;
+  color: #1e293b !important;
+}
+
+.dashboard-table tbody tr.unacknowledged-document:hover,
+.dashboard-table.table-hover tbody tr.unacknowledged-document:hover,
+.table-hover > tbody > tr.unacknowledged-document:hover > * {
+  background-color: #ffd4a3 !important;
+}
+
+.dashboard-table tbody tr.unacknowledged-document:hover td,
+.dashboard-table.table-hover tbody tr.unacknowledged-document:hover td,
+.table-hover > tbody > tr.unacknowledged-document:hover td {
+  background-color: #ffd4a3 !important;
+}
+
+.dashboard-table tbody tr.unacknowledged-document td code.id-big {
+  background: transparent !important;
+  color: #1e293b;
+  font-weight: 700;
+}
+
+/* ==========================
+   BADGE STYLING
+   ========================== */
+.badge-sm {
   font-size: 0.75rem;
   font-weight: 600;
-  padding: 0.45em 0.7em;
-  border-radius: 0.5rem;
-  text-transform: uppercase;
+  padding: 4px 10px;
+  border-radius: 6px;
+  letter-spacing: 0.01em;
 }
 
-.badge-success { background-color: #198754; }
-.badge-info { background-color: #0dcaf0; }
-.badge-danger { background-color: #dc3545; }
-.badge-secondary { background-color: #6c757d; }
-.badge-primary { background-color: #0d6efd; }
+/* Status Badge Colors */
+.badge-pending {
+  background-color: #F59E0B !important;
+  color: #ffffff !important;
+}
+
+.badge-completed {
+  background-color: #22C55E !important;
+  color: #ffffff !important;
+}
+
+.badge-failed {
+  background-color: #EF4444 !important;
+  color: #ffffff !important;
+}
+
+.badge-on-hold {
+  background-color: #64748B !important;
+  color: #ffffff !important;
+}
+
+.badge-on-review {
+  background-color: #3B82F6 !important;
+  color: #ffffff !important;
+}
+
+/* Legacy badge support */
+.badge-success { background-color: #22C55E !important; color: #ffffff !important; }
+.badge-info { background-color: #3B82F6 !important; color: #ffffff !important; }
+.badge-danger { background-color: #EF4444 !important; color: #ffffff !important; }
+.badge-secondary { background-color: #64748B !important; color: #ffffff !important; }
+.badge-primary { background-color: #0d6efd !important; color: #ffffff !important; }
+.badge-warning { background-color: #F59E0B !important; color: #ffffff !important; }
 
 /* ==========================
-   VIEW BUTTON (SECONDARY)
+   VIEW BUTTON (ORANGE)
+   Note: Base styles are in global/buttons.css
    ========================== */
 .custom-btn-view {
+  padding: 6px 12px;
+}
+
+/* ==========================
+   PAGINATION CUSTOM COLORS
+   ========================== */
+.pagination {
+  margin: 16px 0;
+  gap: 4px;
+}
+
+.pagination .page-item .page-link {
+  border-color: #e2e8f0;
+  color: #475569;
+  padding: 8px 12px;
+  border-radius: 6px;
+  font-weight: 500;
+  transition: all 0.15s ease;
+  margin: 0 2px;
+}
+
+.pagination .page-item.active .page-link {
   background-color: #f97316 !important;
   border-color: #f97316 !important;
   color: white !important;
 }
 
-.custom-btn-view:hover {
-  background-color: #e6630d !important;
-  border-color: #e6630d !important;
-  transform: none !important;
-  box-shadow: none;
+.pagination .page-item:not(.active):not(.disabled) .page-link:hover {
+  background-color: #fff5f0 !important;
+  color: #f97316 !important;
+  border-color: #f97316 !important;
 }
 
-/* ==========================
-   PAGINATION – CENTERED
-   ========================== */
-.pagination {
-  display: flex;
-  justify-content: center;
-  margin-top: 16px;
-  margin-bottom: 16px;
-}
-
-.pagination .page-link {
-  border-radius: 0.5rem;
-  margin: 0 3px;
-  color: #495057;
-  font-weight: 500;
-  font-size: 0.85rem;
-}
-
-.pagination .page-link:hover {
-  background-color: #0d6efd;
-  color: #fff;
-}
-
-.pagination .page-item.active .page-link {
-  background-color: #0d6efd;
-  border-color: #0d6efd;
-  color: #fff;
+.pagination .page-item.disabled .page-link {
+  color: #cbd5e1 !important;
+  background-color: #ffffff !important;
+  border-color: #e2e8f0 !important;
+  cursor: not-allowed;
 }
 
 /* ==========================
@@ -263,30 +458,19 @@
 
 /* ==========================
    MORE FILTERS DROPDOWN
+   Note: Base styles are in global/buttons.css
    ========================== */
-.dropdown-toggle-filter {
-  background-color: #f97316 !important;
-  border-color: #f97316 !important;
-  color: white !important;
-}
-
-.dropdown-toggle-filter:hover {
-  background-color: #e6630d !important;
-  border-color: #e6630d !important;
-  transform: none !important;
-  box-shadow: none;
-}
 
 .dropdown-menu.p-3 {
   border-radius: 12px;
-  border: 1px solid #e1e4eb;
-  background-color: #f8f9fc;
-  box-shadow: 0px 4px 20px rgba(0,0,0,0.08);
+  border: 1px solid #e2e8f0;
+  background-color: #ffffff;
+  box-shadow: 0 4px 12px 0 rgba(0, 0, 0, 0.08), 0 2px 4px 0 rgba(0, 0, 0, 0.04);
   padding: 16px !important;
   min-width: 280px;
   max-height: 0;
   opacity: 0;
-  overflow: hidden;
+  overflow: visible;
   transform: translateY(-10px);
   transition: max-height 0.35s ease, opacity 0.25s ease, transform 0.25s ease;
 }
@@ -295,6 +479,7 @@
   max-height: 500px;
   opacity: 1;
   transform: translateY(0);
+  overflow: visible;
 }
 
 .dropdown-menu.p-3 .form-group {
@@ -302,46 +487,56 @@
 }
 
 .dropdown-menu.p-3 .form-group label {
-  font-size: 0.82rem;
-  font-weight: 400;
-  color: #495057;
-  margin-bottom: 4px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #475569;
+  margin-bottom: 6px;
 }
 
 .dropdown-menu.p-3 select,
 .dropdown-menu.p-3 input {
-  height: 36px;
-  font-size: 0.82rem;
-  padding: 6px 10px;
+  height: 40px;
+  font-size: 0.9375rem;
+  padding: 8px 12px;
   border-radius: 6px;
-  border: 1px solid #ced4da;
+  border: 1px solid #e2e8f0;
   background-color: #fff;
   transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
+/* Custom Select Dropdown Styling in Dropdown Menu */
+.dropdown-menu.p-3 select {
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23475569' d='M6 9L1 4h10z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  background-size: 12px;
+  padding-right: 36px;
+  cursor: pointer;
+}
+
+.dropdown-menu.p-3 select:hover {
+  border-color: #cbd5e1;
+}
+
 .dropdown-menu.p-3 select:focus,
 .dropdown-menu.p-3 input:focus {
-  border-color: #FF6B00;
-  box-shadow: 0 0 0 3px rgba(255,107,0,0.2);
+  border-color: #f97316;
+  box-shadow: 0 0 0 3px rgba(249, 115, 22, 0.1);
   outline: none;
 }
 
-.dropdown-menu.p-3 button {
-  font-size: 0.82rem;
-  font-weight: 600;
-  border-radius: 6px;
-  padding: 6px 12px;
-  margin-top: 6px;
-  background-color: #f97316 !important;
-  border-color: #f97316 !important;
-  color: white !important;
+.dropdown-menu.p-3 select:focus {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23f97316' d='M6 9L1 4h10z'/%3E%3C/svg%3E");
 }
 
-.dropdown-menu.p-3 button:hover {
-  background-color: #e6630d !important;
-  border-color: #e6630d !important;
-  transform: none !important;
-  box-shadow: none;
+/* Dropdown menu button overrides - padding only */
+.dropdown-menu.p-3 button {
+  font-size: 0.875rem;
+  padding: 8px 16px;
+  margin-top: 8px;
 }
 
 /* Responsive adjustments */
@@ -355,17 +550,25 @@
 /* ==========================
    SCROLLBAR
    ========================== */
-.table-modern tbody::-webkit-scrollbar {
-  width: 8px;
+.table-wrapper::-webkit-scrollbar,
+.autocomplete-suggestions::-webkit-scrollbar {
+  width: 6px;
 }
 
-.table-modern tbody::-webkit-scrollbar-thumb {
-  background-color: rgba(0,0,0,0.15);
-  border-radius: 4px;
+.table-wrapper::-webkit-scrollbar-track,
+.autocomplete-suggestions::-webkit-scrollbar-track {
+  background: #f8fafc;
 }
 
-.table-modern tbody::-webkit-scrollbar-track {
-  background-color: transparent;
+.table-wrapper::-webkit-scrollbar-thumb,
+.autocomplete-suggestions::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 3px;
+}
+
+.table-wrapper::-webkit-scrollbar-thumb:hover,
+.autocomplete-suggestions::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
 }
 
 .display-flex-vertical {
@@ -374,74 +577,87 @@
   height: 100%;
 }
 
-.table-wrapper {
-  flex: 1;
-  overflow-y: auto;
-}
-
 /* ==========================
-   DISABLE ALL HOVER EFFECTS
+   LOADING OVERLAY
    ========================== */
-.custom-card:hover,
-.custom-card-header:hover,
-.custom-card-search:hover,
-.custom-card-list:hover {
-  transform: none !important;
-  background-color: none !important;
+.table-loading-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(255, 255, 255, 0.9);
+  z-index: 10;
+  backdrop-filter: blur(2px);
 }
 
 /* ==============================
    CUSTOM DELETE MODAL STYLES
 ============================== */
-
 .custom-delete-modal .modal-content {
-  border-radius: 4px; /* rectangle */
-  padding: 1rem;
-  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
-  font-size: 0.95rem;
+  border-radius: 12px;
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 4px 12px 0 rgba(0, 0, 0, 0.08), 0 2px 4px 0 rgba(0, 0, 0, 0.04);
+  font-size: 0.9375rem;
 }
 
 .custom-delete-modal .modal-header {
-  padding: 1rem 1rem 0.5rem 1rem;
+  padding: 20px 24px 12px 24px;
+  border-bottom: 1px solid #f1f5f9;
 }
 
 .custom-delete-modal .modal-body {
-  padding: 0.5rem 1rem 1rem 1rem;
+  padding: 16px 24px 20px 24px;
 }
 
 .custom-delete-modal .modal-body p {
-  line-height: 1.5;
-  margin-bottom: 0.5rem;
+  line-height: 1.6;
+  margin-bottom: 8px;
+  color: #334155;
 }
 
-.custom-delete-modal .btn-cancel {
-  background-color: #ff9f43; /* Orange */
-  border: none;
-  color: white;
-  padding: 0.45rem 1.25rem;
-  border-radius: 4px;
-  transition: 0.2s;
+.custom-delete-modal .modal-body p strong {
+  color: #1e293b;
+  font-weight: 600;
 }
 
-.custom-delete-modal .btn-cancel:hover {
-  background-color: #ffb25a;
-  color: white;
+.custom-delete-modal .modal-footer {
+  padding: 12px 24px 20px 24px;
+  border-top: 1px solid #f1f5f9;
 }
 
+/* Modal button styles are inherited from global/buttons.css */
+.custom-delete-modal .btn-cancel,
 .custom-delete-modal .btn-delete {
-  background-color: #28a745; /* Green */
-  border: none;
-  color: white;
-  padding: 0.45rem 1.25rem;
-  border-radius: 4px;
-  transition: 0.2s;
-}
-
-.custom-delete-modal .btn-delete:hover {
-  background-color: #45c85a;
-  color: white;
+  padding: 8px 16px;
 }
 
 .custom-delete-modal .text-warning {
-  color: #fd7e14 !important; /* Orange warning icon */
+  color: #f97316 !important;
+}
+
+/* ==========================
+   MOBILE FIXES
+   ========================== */
+@media (max-width: 768px) {
+  .page-header .dashboard-title {
+    font-size: 1.875rem;
+  }
+  
+  .page-header .dashboard-subtitle {
+    font-size: 0.9375rem;
+  }
+
+  .custom-card-search .card-body {
+    padding: 16px 20px;
+  }
+
+  .custom-card-list-header {
+    padding: 16px 20px;
+  }
+
+  .dropdown-menu.p-3 {
+    min-width: 100% !important;
+    padding: 12px !important;
+  }
 }

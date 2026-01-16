@@ -3,14 +3,77 @@ import {
   Container, Row, Col, Card, Table, Badge,
   Button, Form, Pagination, Spinner, Dropdown, InputGroup, Modal
 } from 'react-bootstrap';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { Html5Qrcode } from 'html5-qrcode';
+import { BsQrCodeScan } from 'react-icons/bs';
 import api from '../../services/api';
 import '../../css/documents/documentlist.css';
+import '../../css/admin/admin-dashboard.css';
+import '../../css/components/create-user-modal.css';
+
+/* ============================================================
+   Custom Dropdown Component (like Create User Modal)
+=============================================================== */
+const FilterSelect = ({ label, value, options, onChange, placeholder = "Select" }) => {
+  const [open, setOpen] = useState(false);
+  const wrapperRef = useRef(null);
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (wrapperRef.current && !wrapperRef.current.contains(event.target)) {
+        setOpen(false);
+      }
+    };
+
+    if (open) {
+      document.addEventListener('mousedown', handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [open]);
+
+  return (
+    <div className="cu-select-wrapper" ref={wrapperRef}>
+      {label && <label className="cu-label">{label}</label>}
+      <div
+        className={`cu-select-trigger ${open ? 'open' : ''}`}
+        onClick={() => setOpen(o => !o)}
+        style={{ height: '40px', fontSize: '0.95rem' }}
+      >
+        <span>{options.find(o => o.value === value)?.label || placeholder}</span>
+        <span className="cu-select-arrow">▾</span>
+      </div>
+      {open && (
+        <div className="cu-select-options">
+          {options.map(opt => (
+            <div
+              key={opt.value}
+              className={`cu-select-option ${opt.value === value ? 'active' : ''}`}
+              onClick={() => {
+                onChange(opt.value);
+                setOpen(false);
+              }}
+            >
+              {opt.label}
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+};
 
 /* ============================================================
    DOCUMENT TABLE (ALL 7 COLUMNS FIXED)
 =============================================================== */
-const DocumentTable = memo(({ documents, pagination, loading, fetchDocuments, onDeleteClick }) => {
+const DocumentTable = memo(({ documents, pagination, loading, fetchDocuments, onDeleteClick, user }) => {
+  const navigate = useNavigate();
+
+  const handleRowClick = (docId) => {
+    navigate(`/document/${docId}`);
+  };
 
   const formatDate = (dateStr) => {
     const date = new Date(dateStr);
@@ -21,14 +84,69 @@ const DocumentTable = memo(({ documents, pagination, loading, fetchDocuments, on
     });
   };
 
+  // Check if document should be highlighted (user is recipient and not acknowledged)
+  const shouldHighlight = (doc) => {
+    if (!user || !doc.recipients || doc.recipients.length === 0) {
+      return false;
+    }
+    
+    // Find if current user is a recipient
+    const userRecipient = doc.recipients.find(r => r.id === user.id);
+    
+    // Highlight if user is recipient AND not acknowledged
+    // If pivot doesn't exist or is_acknowledged is false/null, highlight it
+    if (!userRecipient || !userRecipient.pivot) {
+      return false;
+    }
+    
+    return !userRecipient.pivot.is_acknowledged;
+  };
+
   const getStatusBadge = (status) => {
+    switch (status) {
+      case 'pending':
+        return <Badge className="badge-sm badge-pending">Pending</Badge>;
+      case 'processing':
+        return <Badge className="badge-sm badge-on-review">Processing</Badge>;
+      case 'completed':
+        return <Badge className="badge-sm badge-completed">Completed</Badge>;
+      case 'failed':
+        return <Badge className="badge-sm badge-failed">Failed</Badge>;
+      case 'on_hold':
+        return <Badge className="badge-sm badge-on-hold">On Hold</Badge>;
+      case 'on_review':
+        return <Badge className="badge-sm badge-on-review">On Review</Badge>;
+      default:
+        return <Badge className="badge-sm badge-on-hold">Unknown</Badge>;
+    }
+  };
+
+  const getClassificationBadge = (classification) => {
     const variants = {
-      pending: 'warning',
-      processing: 'info',
-      completed: 'success',
-      failed: 'danger'
+      invoice: 'primary',
+      contract: 'success',
+      report: 'info',
+      form: 'warning',
+      other: 'secondary'
     };
-    return <Badge bg={variants[status] || 'secondary'} className="fw-semibold">{status}</Badge>;
+    
+    const labels = {
+      invoice: 'Invoice',
+      contract: 'Contract',
+      report: 'Report',
+      form: 'Form',
+      other: 'Other'
+    };
+    
+    const type = classification || 'other';
+    const label = labels[type] || 'Unclassified';
+    const variant = variants[type] || 'secondary';
+    
+    return (
+      <Badge bg={variant} className="badge-sm">
+        {label}
+      </Badge>
+    );
   };
 
   const renderPagination = () => {
@@ -88,29 +206,40 @@ const DocumentTable = memo(({ documents, pagination, loading, fetchDocuments, on
           )}
 
           <Table className="dashboard-table mb-0">
-            <thead className="table-light">
+            <thead>
               <tr>
-                <th className="fw-semibold" style={{ width: '180px' }}>ID</th>
-                <th className="fw-semibold" style={{ width: '200px' }}>Title</th>
-                <th className="fw-semibold" style={{ width: '180px' }}>Uploader</th>
-                <th className="fw-semibold" style={{ width: '140px' }}>Recipients</th>
-                <th className="fw-semibold" style={{ width: '140px' }}>Status</th>
-                <th className="fw-semibold" style={{ width: '150px' }}>Date</th>
-                <th className="fw-semibold" style={{ width: '200px' }}>Actions</th>
+                <th style={{ width: '180px' }}>ID</th>
+                <th style={{ width: '200px' }}>Title</th>
+                <th style={{ width: '140px' }}>Classification</th>
+                <th style={{ width: '180px' }}>Uploader</th>
+                <th style={{ width: '140px' }}>Recipients</th>
+                <th style={{ width: '140px' }}>Status</th>
+                <th style={{ width: '150px' }}>Date</th>
+                <th style={{ width: '200px' }}>Actions</th>
               </tr>
             </thead>
 
             <tbody>
               {documents.length > 0 ? (
-                documents.map((doc) => (
-                  <tr key={doc.id}>
+                documents.map((doc) => {
+                  const isUnacknowledged = shouldHighlight(doc);
+                  return (
+                    <tr 
+                      key={doc.id}
+                      className={`clickable-row ${isUnacknowledged ? 'unacknowledged-document' : ''}`}
+                      onClick={() => handleRowClick(doc.id)}
+                    >
 
                     <td style={{ width: '180px' }}>
-                      <code>{doc.document_id}</code>
+                      <code className="id-big">{doc.document_id}</code>
                     </td>
 
                     <td style={{ width: '200px' }} className="text-truncate">
                       {doc.title}
+                    </td>
+
+                    <td style={{ width: '140px' }}>
+                      {getClassificationBadge(doc.classification)}
                     </td>
 
                     <td style={{ width: '180px' }}>
@@ -118,7 +247,7 @@ const DocumentTable = memo(({ documents, pagination, loading, fetchDocuments, on
                     </td>
 
                     <td style={{ width: '140px' }}>
-                      <Badge bg="secondary" className="fw-semibold">
+                      <Badge bg="secondary" className="badge-sm">
                         {doc.recipients?.length || 0} recipients
                       </Badge>
                     </td>
@@ -131,31 +260,26 @@ const DocumentTable = memo(({ documents, pagination, loading, fetchDocuments, on
                       {formatDate(doc.created_at)}
                     </td>
 
-                    <td style={{ width: '200px' }} className="d-flex gap-2">
-                      <Button
-                        as={Link}
-                        to={`/document/${doc.id}`}
-                        size="sm"
-                        className="custom-btn-view fw-semibold"
-                      >
-                        <i className="bi bi-eye me-1"></i> View
-                      </Button>
-
+                    <td style={{ width: '200px' }}>
                       <Button
                         size="sm"
                         variant="danger"
                         className="fw-semibold"
-                        onClick={() => onDeleteClick(doc)}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          onDeleteClick(doc);
+                        }}
                       >
                         <i className="bi bi-trash me-1"></i> Delete
                       </Button>
                     </td>
 
                   </tr>
-                ))
+                  );
+                })
               ) : (
                 <tr>
-                  <td colSpan="7" className="text-center py-5 text-muted">
+                  <td colSpan="8" className="text-center py-5 text-muted">
                     <i className="bi bi-inbox fs-1 mb-3"></i>
                     <br />
                     No documents found
@@ -181,6 +305,7 @@ const DocumentTable = memo(({ documents, pagination, loading, fetchDocuments, on
 =============================================================== */
 const DocumentList = ({ user }) => {
   const location = useLocation();
+  const navigate = useNavigate();
 
   const [documents, setDocuments] = useState([]);
   const [pagination, setPagination] = useState({});
@@ -193,12 +318,18 @@ const DocumentList = ({ user }) => {
 
   const [filterStatus, setFilterStatus] = useState('all');
   const [filterFileType, setFilterFileType] = useState('all');
+  const [filterClassification, setFilterClassification] = useState('all');
   const [sortBy, setSortBy] = useState('newest');
   const [fromDate, setFromDate] = useState('');
   const [toDate, setToDate] = useState('');
 
   const inputRef = useRef(null);
   const autocompleteRef = useRef(null);
+
+  /* ====================== QR SCANNER LOGIC ====================== */
+  const [showQRScanner, setShowQRScanner] = useState(false);
+  const [qrScanning, setQrScanning] = useState(false);
+  const qrCodeReaderRef = useRef(null);
 
   /* ====================== DELETE MODAL LOGIC ====================== */
   const [showDeleteModal, setShowDeleteModal] = useState(false);
@@ -238,6 +369,7 @@ const DocumentList = ({ user }) => {
           page,
           status: filterStatus !== 'all' ? filterStatus : undefined,
           file_type: filterFileType !== 'all' ? filterFileType : undefined,
+          classification: filterClassification !== 'all' ? filterClassification : undefined,
           sort: sortBy !== 'newest' ? sortBy : undefined,
           from_date: fromDate || undefined,
           to_date: toDate || undefined,
@@ -260,12 +392,12 @@ const DocumentList = ({ user }) => {
         setLoading(false);
       }
     },
-    [filterStatus, filterFileType, sortBy, fromDate, toDate]
+    [filterStatus, filterFileType, filterClassification, sortBy, fromDate, toDate]
   );
 
   useEffect(() => {
     fetchDocuments(1);
-  }, [filterStatus, filterFileType, sortBy, fromDate, toDate, location.pathname]);
+  }, [filterStatus, filterFileType, filterClassification, sortBy, fromDate, toDate, location.pathname]);
 
   /* ====================== AUTOCOMPLETE ====================== */
   const fetchSuggestions = async (value) => {
@@ -322,6 +454,7 @@ const DocumentList = ({ user }) => {
   const resetFilters = () => {
     setFilterStatus('all');
     setFilterFileType('all');
+    setFilterClassification('all');
     setSortBy('newest');
     setFromDate('');
     setToDate('');
@@ -329,8 +462,110 @@ const DocumentList = ({ user }) => {
     fetchDocuments(1);
   };
 
+  /* ====================== QR SCANNER ====================== */
+  const startQRScanner = async () => {
+    try {
+      setShowQRScanner(true);
+      
+      // Wait for modal to render
+      setTimeout(async () => {
+        try {
+          setQrScanning(true);
+          const qrCodeReader = new Html5Qrcode("qr-scanner");
+          qrCodeReaderRef.current = qrCodeReader;
+
+          await qrCodeReader.start(
+            { facingMode: 'environment' },
+            {
+              fps: 10,
+              qrbox: { width: 250, height: 250 }
+            },
+            (decodedText) => {
+              // QR code scanned successfully
+              handleQRScanSuccess(decodedText);
+            },
+            (errorMessage) => {
+              // Ignore scanning errors (they're frequent during scanning)
+            }
+          );
+        } catch (err) {
+          console.error('QR Scanner error:', err);
+          setQrScanning(false);
+          alert('Unable to start QR scanner. Please ensure camera permissions are granted.');
+        }
+      }, 100);
+    } catch (err) {
+      console.error('QR Scanner setup error:', err);
+      setQrScanning(false);
+      setShowQRScanner(false);
+    }
+  };
+
+  const stopQRScanner = () => {
+    if (qrCodeReaderRef.current) {
+      qrCodeReaderRef.current.stop().then(() => {
+        qrCodeReaderRef.current.clear();
+        qrCodeReaderRef.current = null;
+      }).catch((err) => {
+        console.error('Error stopping QR scanner:', err);
+      });
+    }
+    setQrScanning(false);
+    setShowQRScanner(false);
+  };
+
+  const handleQRScanSuccess = (decodedText) => {
+    // Stop scanner
+    stopQRScanner();
+    
+    // Check if it's an internal route (starts with /)
+    if (decodedText.startsWith('/')) {
+      // Internal route - navigate within the app
+      navigate(decodedText);
+      return;
+    }
+    
+    // Check if the scanned text is a URL (http:// or https://)
+    const isUrl = /^https?:\/\//i.test(decodedText);
+    
+    if (isUrl) {
+      // Check if it's an internal route (contains /document/)
+      if (decodedText.includes('/document/')) {
+        // Extract the document ID from the URL
+        const match = decodedText.match(/\/document\/(\d+)/);
+        if (match && match[1]) {
+          // Navigate to the document view
+          navigate(`/document/${match[1]}`);
+          return;
+        }
+      }
+      
+      // External URL - open in new tab
+      window.open(decodedText, '_blank');
+      return;
+    }
+    
+    // If it's not a URL or route, treat it as a search term
+    setManualSearch(decodedText);
+    setSuggestions([]);
+    setShowAutocomplete(false);
+    
+    // Trigger search
+    fetchDocuments(1, decodedText);
+  };
+
+  // Cleanup on unmount
+  useEffect(() => {
+    return () => {
+      if (qrCodeReaderRef.current) {
+        qrCodeReaderRef.current.stop().catch(() => {});
+      }
+    };
+  }, []);
+
   return (
-    <Container fluid className="document-list-container">
+    <div className="user-dashboard-container">
+    <Container>
 
       {/* HEADER */}
       <Row className="page-header mb-4">
@@ -361,21 +596,108 @@ const DocumentList = ({ user }) => {
 
                 {/* SEARCH */}
                 <Col lg={6} style={{ position: 'relative' }}>
-                  <Form.Control
-                    ref={inputRef}
-                    type="text"
-                    placeholder="Search title, ID, or keywords..."
-                    value={manualSearch}
-                    onChange={(e) => {
-                      setManualSearch(e.target.value);
-                      fetchSuggestions(e.target.value);
-                      setShowAutocomplete(true);
-                      setHighlightIndex(-1);
-                    }}
-                    onKeyDown={handleKeyDown}
-                    onFocus={() => { if (suggestions.length > 0) setShowAutocomplete(true); }}
-                    style={{ height: '40px', fontSize: '0.95rem' }}
-                  />
+                  <div style={{ position: 'relative' }}>
+                    <Form.Control
+                      ref={inputRef}
+                      type="text"
+                      placeholder="Search title, ID, or keywords..."
+                      value={manualSearch}
+                      onChange={(e) => {
+                        setManualSearch(e.target.value);
+                        fetchSuggestions(e.target.value);
+                        setShowAutocomplete(true);
+                        setHighlightIndex(-1);
+                      }}
+                      onKeyDown={handleKeyDown}
+                      onFocus={() => { if (suggestions.length > 0) setShowAutocomplete(true); }}
+                      style={{ 
+                        height: '40px', 
+                        fontSize: '0.95rem', 
+                        paddingRight: manualSearch ? '45px' : '50px' 
+                      }}
+                    />
+                    {/* QR Scanner Button - Only show when search field is empty */}
+                    {!manualSearch && (
+                      <button
+                        type="button"
+                        className="qr-scanner-btn"
+                        onClick={startQRScanner}
+                        style={{
+                          position: 'absolute',
+                          right: '12px',
+                          top: '50%',
+                          transform: 'translateY(-50%)',
+                          border: 'none',
+                          background: 'transparent',
+                          padding: '8px',
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          fontSize: '1.2rem',
+                          color: '#64748b',
+                          cursor: 'pointer',
+                          transition: 'all 0.2s ease',
+                          borderRadius: '6px',
+                          width: '32px',
+                          height: '32px',
+                          zIndex: 10
+                        }}
+                        onMouseEnter={(e) => {
+                          e.target.style.color = '#FF6B00';
+                          e.target.style.backgroundColor = 'rgba(255, 107, 0, 0.08)';
+                        }}
+                        onMouseLeave={(e) => {
+                          e.target.style.color = '#64748b';
+                          e.target.style.backgroundColor = 'transparent';
+                        }}
+                        title="Scan QR Code"
+                      >
+                        <BsQrCodeScan />
+                      </button>
+                    )}
+                    {manualSearch && (
+                      <button
+                        type="button"
+                        className="search-clear-btn"
+                        onClick={() => {
+                          setManualSearch('');
+                          setSuggestions([]);
+                          setShowAutocomplete(false);
+                          fetchDocuments(1);
+                        }}
+                        style={{
+                          position: 'absolute',
+                          right: '12px',
+                          top: '50%',
+                          transform: 'translateY(-50%)',
+                          border: 'none',
+                          background: 'transparent',
+                          padding: '8px',
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          fontSize: '1.2rem',
+                          color: '#64748b',
+                          cursor: 'pointer',
+                          transition: 'all 0.2s ease',
+                          borderRadius: '6px',
+                          width: '32px',
+                          height: '32px',
+                          zIndex: 10
+                        }}
+                        onMouseEnter={(e) => {
+                          e.target.style.color = '#FF6B00';
+                          e.target.style.backgroundColor = 'rgba(255, 107, 0, 0.08)';
+                        }}
+                        onMouseLeave={(e) => {
+                          e.target.style.color = '#64748b';
+                          e.target.style.backgroundColor = 'transparent';
+                        }}
+                      >
+                        <i className="bi bi-x-lg"></i>
+                      </button>
+                    )}
+                  </div>
 
                   {showAutocomplete && suggestions.length > 0 && (
                     <ul ref={autocompleteRef} className="autocomplete-suggestions list-unstyled shadow-sm">
@@ -401,17 +723,18 @@ const DocumentList = ({ user }) => {
 
                 {/* STATUS FILTER */}
                 <Col lg={2}>
-                  <Form.Select
+                  <FilterSelect
                     value={filterStatus}
-                    onChange={(e) => setFilterStatus(e.target.value)}
-                    style={{ height: '40px', fontSize: '0.95rem' }}
-                  >
-                    <option value="all">All Status</option>
-                    <option value="pending">Pending</option>
-                    <option value="processing">Processing</option>
-                    <option value="completed">Completed</option>
-                    <option value="failed">Failed</option>
-                  </Form.Select>
+                    onChange={(value) => setFilterStatus(value)}
+                    options={[
+                      { value: 'all', label: 'All Status' },
+                      { value: 'pending', label: 'Pending' },
+                      { value: 'processing', label: 'Processing' },
+                      { value: 'completed', label: 'Completed' },
+                      { value: 'failed', label: 'Failed' }
+                    ]}
+                    placeholder="All Status"
+                  />
                 </Col>
 
                 {/* SEARCH BUTTON */}
@@ -439,30 +762,52 @@ const DocumentList = ({ user }) => {
                     <Dropdown.Menu className="p-3" style={{ width: 300 }}>
 
                       <Form.Group className="mb-3">
-                        <Form.Label>File Type</Form.Label>
-                        <Form.Select
+                        <FilterSelect
+                          label="File Type"
                           value={filterFileType}
-                          onChange={(e) => setFilterFileType(e.target.value)}
-                        >
-                          <option value="all">All</option>
-                          <option value="pdf">PDF</option>
-                          <option value="docx">DOCX</option>
-                          <option value="xlsx">XLSX</option>
-                          <option value="image">Images</option>
-                          <option value="zip">ZIP</option>
-                        </Form.Select>
+                          onChange={(value) => setFilterFileType(value)}
+                          options={[
+                            { value: 'all', label: 'All' },
+                            { value: 'pdf', label: 'PDF' },
+                            { value: 'docx', label: 'DOCX' },
+                            { value: 'xlsx', label: 'XLSX' },
+                            { value: 'image', label: 'Images' },
+                            { value: 'zip', label: 'ZIP' }
+                          ]}
+                          placeholder="All"
+                        />
                       </Form.Group>
 
                       <Form.Group className="mb-3">
-                        <Form.Label>Sort</Form.Label>
-                        <Form.Select
+                        <FilterSelect
+                          label="Classification"
+                          value={filterClassification}
+                          onChange={(value) => setFilterClassification(value)}
+                          options={[
+                            { value: 'all', label: 'All Types' },
+                            { value: 'invoice', label: 'Invoice' },
+                            { value: 'contract', label: 'Contract' },
+                            { value: 'report', label: 'Report' },
+                            { value: 'form', label: 'Form' },
+                            { value: 'other', label: 'Other' }
+                          ]}
+                          placeholder="All Types"
+                        />
+                      </Form.Group>
+
+                      <Form.Group className="mb-3">
+                        <FilterSelect
+                          label="Sort"
                           value={sortBy}
-                          onChange={(e) => setSortBy(e.target.value)}
-                        >
-                          <option value="newest">Newest</option>
-                          <option value="oldest">Oldest</option>
-                          <option value="a-z">Title A–Z</option>
-                        </Form.Select>
+                          onChange={(value) => setSortBy(value)}
+                          options={[
+                            { value: 'newest', label: 'Newest' },
+                            { value: 'oldest', label: 'Oldest' },
+                            { value: 'a-z', label: 'Title A–Z' },
+                            { value: 'z-a', label: 'Title Z–A' }
+                          ]}
+                          placeholder="Newest"
+                        />
                       </Form.Group>
 
                       <Form.Group className="mb-3">
@@ -496,9 +841,54 @@ const DocumentList = ({ user }) => {
             loading={loading}
             fetchDocuments={fetchDocuments}
             onDeleteClick={onDeleteClick}
+            user={user}
           />
         </Col>
       </Row>
+
+      {/* QR Scanner Modal */}
+      <Modal 
+        show={showQRScanner} 
+        onHide={stopQRScanner} 
+        centered 
+        size="md"
+        backdrop="static"
+        keyboard={false}
+      >
+        <Modal.Header className="border-bottom">
+          <h5 className="fw-bold mb-0">
+            <BsQrCodeScan className="me-2" />
+            Scan QR Code
+          </h5>
+        </Modal.Header>
+        <Modal.Body className="d-flex flex-column align-items-center p-4">
+          <div 
+            id="qr-scanner"
+            style={{
+              width: '100%',
+              maxWidth: '400px',
+              minHeight: '300px',
+              border: '2px solid #e2e8f0',
+              borderRadius: '8px',
+              overflow: 'hidden'
+            }}
+          />
+          {qrScanning && (
+            <p className="text-muted mt-3 mb-0 text-center">
+              Position the QR code within the frame
+            </p>
+          )}
+        </Modal.Body>
+        <Modal.Footer className="border-top">
+          <Button 
+            variant="secondary" 
+            onClick={stopQRScanner}
+            className="fw-semibold"
+          >
+            Cancel
+          </Button>
+        </Modal.Footer>
+      </Modal>
 
       <Modal 
         show={showDeleteModal} 
@@ -558,6 +948,7 @@ const DocumentList = ({ user }) => {
 
 
     </Container>
+    </div>
   );
 };
 

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Container, Row, Col, Card, Table, Badge, Button, Pagination } from 'react-bootstrap';
+import { Container, Row, Col, Card, Table, Badge, Button } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import api from '../../services/api';
 import '../../css/admin/admin-dashboard.css';
@@ -17,25 +17,11 @@ const AdminDashboard = ({ user }) => {
   const [recentActivities, setRecentActivities] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  const [docPage, setDocPage] = useState(1);
-  const [docTotalPages, setDocTotalPages] = useState(1);
-  const [docPerPage] = useState(10);
-
-  const [actPage, setActPage] = useState(1);
-  const [actTotalPages, setActTotalPages] = useState(1);
-  const [actPerPage] = useState(10);
-
   useEffect(() => {
     fetchDashboardStats();
+    fetchDocuments();
+    fetchActivities();
   }, []);
-
-  useEffect(() => {
-    fetchDocuments(docPage);
-  }, [docPage]);
-
-  useEffect(() => {
-    fetchActivities(actPage);
-  }, [actPage]);
 
   const fetchDashboardStats = async () => {
     try {
@@ -48,25 +34,27 @@ const AdminDashboard = ({ user }) => {
     }
   };
 
-  const fetchDocuments = async (page) => {
+  const fetchDocuments = async () => {
     try {
       const res = await api.get('/document', {
-        params: { page, per_page: docPerPage },
+        params: { page: 1, per_page: 5 },
       });
-      setRecentDocuments(res.data.data.reverse());
-      setDocTotalPages(res.data.last_page);
+      // Get the latest 5 documents
+      const documents = res.data.data.reverse().slice(0, 5);
+      setRecentDocuments(documents);
     } catch (error) {
       console.error('Failed to fetch documents:', error);
     }
   };
 
-  const fetchActivities = async (page) => {
+  const fetchActivities = async () => {
     try {
       const res = await api.get('/admin/activity-logs', {
-        params: { page, per_page: actPerPage },
+        params: { page: 1, per_page: 5 },
       });
-      setRecentActivities(res.data.data.reverse());
-      setActTotalPages(res.data.last_page);
+      // Get the latest 5 activities
+      const activities = res.data.data.reverse().slice(0, 5);
+      setRecentActivities(activities);
     } catch (error) {
       console.error('Failed to fetch activities:', error);
     }
@@ -87,51 +75,22 @@ const AdminDashboard = ({ user }) => {
   const getDocumentStatusBadge = (status) => {
     switch (status) {
       case 'pending':
-        return <Badge bg="secondary" className="badge-sm">Pending</Badge>;
+        return <Badge className="badge-sm badge-pending">Pending</Badge>;
       case 'processing':
-        return <Badge bg="warning" className="badge-sm">Processing</Badge>;
+        return <Badge className="badge-sm badge-on-review">On Review</Badge>;
       case 'completed':
-        return <Badge bg="success" className="badge-sm">Completed</Badge>;
+        return <Badge className="badge-sm badge-completed">Completed</Badge>;
       case 'failed':
-        return <Badge bg="danger" className="badge-sm">Failed</Badge>;
+        return <Badge className="badge-sm badge-failed">Failed</Badge>;
+      case 'on_hold':
+        return <Badge className="badge-sm badge-on-hold">On Hold</Badge>;
+      case 'on_review':
+        return <Badge className="badge-sm badge-on-review">On Review</Badge>;
       default:
-        return <Badge bg="dark" className="badge-sm">Unknown</Badge>;
+        return <Badge className="badge-sm badge-on-hold">Unknown</Badge>;
     }
   };
 
-  const renderPagination = (currentPage, totalPages, setPage) => {
-    if (totalPages <= 1) return null;
-
-    const maxButtons = 5;
-    let startPage = Math.max(1, currentPage - Math.floor(maxButtons / 2));
-    let endPage = startPage + maxButtons - 1;
-
-    if (endPage > totalPages) {
-      endPage = totalPages;
-      startPage = Math.max(1, endPage - maxButtons + 1);
-    }
-
-    const pages = [];
-    if (startPage > 1) pages.push(<Pagination.Ellipsis key="start" disabled />);
-    for (let i = startPage; i <= endPage; i++) {
-      pages.push(
-        <Pagination.Item key={i} active={i === currentPage} onClick={() => setPage(i)}>
-          {i}
-        </Pagination.Item>
-      );
-    }
-    if (endPage < totalPages) pages.push(<Pagination.Ellipsis key="end" disabled />);
-
-    return (
-      <Pagination className="justify-content-center mt-2 mb-2">
-        <Pagination.First disabled={currentPage === 1} onClick={() => setPage(1)} />
-        <Pagination.Prev disabled={currentPage === 1} onClick={() => setPage(currentPage - 1)} />
-        {pages}
-        <Pagination.Next disabled={currentPage === totalPages} onClick={() => setPage(currentPage + 1)} />
-        <Pagination.Last disabled={currentPage === totalPages} onClick={() => setPage(totalPages)} />
-      </Pagination>
-    );
-  };
 
   if (loading) {
     return (
@@ -190,8 +149,11 @@ const AdminDashboard = ({ user }) => {
         <Col lg={7} className="mb-4">
           <Card className="custom-card-recent dashboard-card-height">
             <Card.Header className="custom-card-header-recent d-flex justify-content-between">
-              <h5>Recent Documents</h5>
-              <Button as={Link} to="/document" size="sm" variant="outline-primary">View All</Button>
+              <h5>
+                <i className="bi bi-file-earmark-text me-2"></i>
+                Recent Documents
+              </h5>
+              <Button as={Link} to="/document" size="sm" variant="outline-primary" className="btn-view-all">View All</Button>
             </Card.Header>
 
             <Card.Body className="p-0 d-flex flex-column">
@@ -204,7 +166,6 @@ const AdminDashboard = ({ user }) => {
                       <th>Uploader</th>
                       <th>Status</th>
                       <th>Date</th>
-                      <th></th>
                     </tr>
                   </thead>
 
@@ -216,18 +177,11 @@ const AdminDashboard = ({ user }) => {
                         <td>{doc.uploader?.name}</td>
                         <td>{getDocumentStatusBadge(doc.status)}</td>
                         <td>{formatDate(doc.created_at)}</td>
-                        <td>
-                          <Button as={Link} to={`/document/${doc.id}`} size="sm" className="btn-eye-orange">
-                            <i className="bi bi-eye"></i>
-                          </Button>
-                        </td>
                       </tr>
                     ))}
                   </tbody>
                 </Table>
               </div>
-
-              {renderPagination(docPage, docTotalPages, setDocPage)}
             </Card.Body>
           </Card>
         </Col>
@@ -236,7 +190,10 @@ const AdminDashboard = ({ user }) => {
         <Col lg={5} className="mb-4">
           <Card className="custom-card-activities dashboard-card-height">
             <Card.Header className="custom-card-header-activities">
-              <h5>Recent Activities</h5>
+              <h5>
+                <i className="bi bi-clock-history me-2"></i>
+                Recent Activities
+              </h5>
             </Card.Header>
 
             <Card.Body className="p-0 d-flex flex-column">
@@ -260,8 +217,6 @@ const AdminDashboard = ({ user }) => {
                   </div>
                 ))}
               </div>
-
-              {renderPagination(actPage, actTotalPages, setActPage)}
             </Card.Body>
           </Card>
         </Col>

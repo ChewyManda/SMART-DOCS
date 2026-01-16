@@ -2,38 +2,149 @@
    MAIN NAVBAR
    ========================== */
 .smart-navbar {
-  background: white !important;
-  border-bottom: 2px solid #f1f1f1;
-  padding-top: 6px;
-  padding-bottom: 6px;
+  background: #ffffff !important;
+  border-bottom: 1px solid #e5e7eb;
+  padding-top: 0;
+  padding-bottom: 0;
+  height: 56px;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.05), 0 1px 2px 0 rgba(0, 0, 0, 0.03);
+  position: relative;
+  z-index: 999;
+}
+
+.smart-navbar .container {
+  height: 100%;
+  display: flex;
+  align-items: center;
+}
+
+/* When navbar is used with sidebar (admin users) */
+.navbar-with-sidebar,
+.navbar-with-sidebar-collapsed {
+  position: fixed;
+  top: 0;
+  right: 0;
+  z-index: 998;
+  transition: margin-left 0.3s ease, width 0.3s ease;
+}
+
+.navbar-with-sidebar {
+  margin-left: 260px;
+  width: calc(100% - 260px);
+}
+
+.navbar-with-sidebar-collapsed {
+  margin-left: 70px;
+  width: calc(100% - 70px);
+}
+
+.navbar-with-sidebar .smart-navbar,
+.navbar-with-sidebar-collapsed .smart-navbar {
+  margin-left: 0;
+  width: 100%;
+}
+
+/* Align navbar content with admin main content padding */
+.navbar-with-sidebar .container,
+.navbar-with-sidebar-collapsed .container {
+  padding-left: 40px;
+  padding-right: 40px;
+}
+
+/* Keep notification and account in same position when sidebar toggles */
+.navbar-with-sidebar .ms-auto,
+.navbar-with-sidebar-collapsed .ms-auto {
+  position: fixed;
+  right: 40px;
+  top: 0;
+  height: 56px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  z-index: 999;
+}
+
+/* Ensure dropdowns from fixed nav items display correctly */
+.navbar-with-sidebar .ms-auto .dropdown-menu,
+.navbar-with-sidebar-collapsed .ms-auto .dropdown-menu {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  left: auto;
+}
+
+@media (max-width: 992px) {
+  .navbar-with-sidebar .container,
+  .navbar-with-sidebar-collapsed .container {
+    padding-left: 24px;
+    padding-right: 24px;
+  }
+
+  .navbar-with-sidebar .ms-auto,
+  .navbar-with-sidebar-collapsed .ms-auto {
+    right: 24px;
+  }
 }
 
 /* ==========================
    BRAND
    ========================== */
+.navbar-brand-logo {
+  display: flex;
+  align-items: center;
+  text-decoration: none !important;
+  margin-right: 24px;
+}
+
+.navbar-brand-logo:hover {
+  text-decoration: none !important;
+}
+
+.navbar-brand-logo .brand-logo {
+  height: 36px;
+  margin-right: 8px;
+}
+
+.navbar-brand-logo .brand-text {
+  font-weight: 700;
+  font-size: 1.25rem;
+  display: flex;
+  gap: 2px;
+  margin-left: 0;
+}
+
 .brand-wrapper {
   display: flex;
   align-items: center;
-  transform: none !important;      /* prevent any scale/translate */
-  transition: none !important;     /* disable any hover animation */
+  transform: none !important;
+  transition: none !important;
+  text-decoration: none;
+}
+
+.brand-wrapper:hover {
+  text-decoration: none;
 }
 
 .brand-logo {
   height: 45px;
-  transform: none !important;      /* disable hover transform */
-  transition: none !important;     /* disable animation */
-  pointer-events: none;            /* optional: prevent accidental hover effects */
+  transform: none !important;
+  transition: none !important;
+  pointer-events: none;
 }
 
 .brand-text {
-  font-weight: 800;
-  font-size: 1.55rem;
-  margin-left: 8px;
-  letter-spacing: 0.5px;
+  font-weight: 700;
+  font-size: 1.5rem;
+  margin-left: 10px;
+  letter-spacing: 0.3px;
   display: flex;
-  gap: 3px;
-  transform: none !important;      /* prevent hover transform */
+  gap: 2px;
+  transform: none !important;
   transition: none !important;
+  line-height: 1.2;
 }
 
 /* SMART = orange */
@@ -46,7 +157,6 @@
   color: #0f5f36;
 }
 
-/* No hover effect for brand text */
 .brand-text:hover {
   opacity: 1;
   transform: none !important;
@@ -56,23 +166,52 @@
 /* ==========================
    NAV LINKS
    ========================== */
-.nav-links .nav-link {
-  font-weight: 500;
-  margin-right: 10px;
-  transition: color 0.2s ease;
+.nav-links {
+  gap: 4px;
 }
 
-/* Hover color only for nav links */
+.nav-links .nav-link {
+  font-weight: 500;
+  font-size: 0.95rem;
+  color: #4b5563;
+  padding: 8px 16px !important;
+  margin: 0 2px;
+  border-radius: 6px;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.nav-links .nav-link i {
+  font-size: 1rem;
+  margin-right: 6px;
+}
+
+/* Hover state for nav links */
 .nav-links .nav-link:hover {
   color: #ff5a00 !important;
+  background-color: #fff5f0;
 }
 
 /* Active link highlight */
-.active-link {
-  font-weight: 700;
+.nav-links .nav-link.active-link {
+  font-weight: 600;
   color: #ff5a00 !important;
-  border-bottom: 3px solid #ff5a00;
-  padding-bottom: 4px;
+  background-color: #fff5f0;
+  border-bottom: none;
+  padding-bottom: 8px;
+}
+
+.nav-links .nav-link.active-link::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 16px;
+  right: 16px;
+  height: 2px;
+  background-color: #ff5a00;
+  border-radius: 2px 2px 0 0;
 }
 
 /* ==========================
@@ -80,69 +219,147 @@
    ========================== */
 .notif-icon-wrapper {
   position: relative;
+  display: flex;
+  align-items: center;
+  padding: 8px 12px;
+  border-radius: 8px;
+  transition: background-color 0.2s ease;
+  cursor: pointer;
+}
+
+.notif-icon-wrapper:hover {
+  background-color: #f9fafb;
 }
 
 .notif-icon {
-  transition: none !important; /* remove hover animation */
-  color: inherit;               /* no color change */
+  color: #4b5563;
+  font-size: 1.25rem;
+  transition: color 0.2s ease;
 }
 
-.notif-icon:hover {
-  color: inherit;
+.notif-icon-wrapper:hover .notif-icon {
+  color: #ff5a00;
+}
+
+/* Hide Bootstrap's default dropdown toggle icon (caret) for all NavDropdowns */
+.smart-navbar .dropdown-toggle::after {
+  display: none !important;
+  content: none !important;
+  border: none !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  width: 0 !important;
+  height: 0 !important;
+}
+
+/* Ensure NavDropdown doesn't add extra spacing */
+.smart-navbar .nav .nav-item {
+  display: flex;
+  align-items: center;
+}
+
+.smart-navbar .nav .nav-item .dropdown-toggle {
+  padding: 0 !important;
+  border: none !important;
+  background: none !important;
+  box-shadow: none !important;
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+}
+
+/* Remove any default Bootstrap dropdown styling */
+.smart-navbar .nav-link.dropdown-toggle {
+  padding: 0 !important;
 }
 
 .notif-badge {
   position: absolute;
-  top: -6px;
-  right: -10px;
-  font-size: 0.7rem;
+  top: 4px;
+  right: 4px;
+  font-size: 0.65rem;
+  font-weight: 600;
+  padding: 2px 6px;
+  min-width: 18px;
+  height: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #ff5a00;
+  color: #ffffff;
+  border: 2px solid #ffffff;
+  border-radius: 10px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .notif-header {
-  padding: 10px 14px;
-  border-bottom: 1px solid #eee;
+  padding: 14px 16px;
+  border-bottom: 1px solid #e5e7eb;
   display: flex;
   justify-content: space-between;
   align-items: center;
+  background-color: #fafafa;
+}
+
+.notif-header strong {
+  color: #1f2937;
+  font-size: 0.95rem;
+  font-weight: 600;
 }
 
 .notif-readall {
   background: none;
   border: none;
   color: #ff5a00;
-  font-size: 0.8rem;
+  font-size: 0.85rem;
+  font-weight: 500;
   cursor: pointer;
-  transition: opacity 0.2s ease;
+  padding: 4px 8px;
+  border-radius: 4px;
+  transition: all 0.2s ease;
 }
 
 .notif-readall:hover {
-  opacity: 0.7;
+  background-color: #fff5f0;
+  color: #e04a00;
 }
 
 .notif-body {
   max-height: 350px;
   overflow-y: auto;
+  background-color: #ffffff;
 }
 
 .notif-item {
-  padding: 10px 14px;
-  border-bottom: 1px solid #f5f5f5;
-  transition: background 0.2s ease;
+  padding: 12px 16px;
+  border-bottom: 1px solid #f3f4f6;
+  transition: background-color 0.2s ease;
+  cursor: pointer;
 }
 
 .notif-item:hover {
-  background: #fff3e6;
+  background-color: #fff5f0;
 }
 
 .notif-item.unread {
-  background: #fff8ec;
+  background-color: #fffbf7;
   border-left: 3px solid #ff5a00;
+  padding-left: 13px;
+}
+
+.notif-item:last-child {
+  border-bottom: none;
 }
 
 .notif-empty {
-  padding: 25px;
+  padding: 40px 25px;
   text-align: center;
-  color: #999;
+  color: #9ca3af;
+}
+
+.notif-empty i {
+  opacity: 0.5;
+  margin-bottom: 12px;
 }
 
 /* ==========================
@@ -150,31 +367,164 @@
    ========================== */
 .user-section {
   font-weight: 500;
+  font-size: 0.9rem;
+  color: #374151;
+  display: flex;
+  align-items: center;
+  padding: 6px 12px;
+  border-radius: 8px;
+  transition: background-color 0.2s ease;
+  cursor: pointer;
 }
 
-/* ==========================
-   LOGOUT BUTTON
-   ========================== */
-.dropdown-item.logout-btn {
-  color: #dc3545 !important; 
-  font-weight: 600;
-  transition: background 0.2s ease, color 0.2s ease;
+.user-section:hover {
+  background-color: #f9fafb;
 }
 
-.dropdown-item.logout-btn:hover {
-  background: #ffe5e5 !important;
-  color: #b30000 !important;
+.user-section img {
+  border: 2px solid #e5e7eb;
+  transition: border-color 0.2s ease;
 }
 
-.dropdown-item.logout-btn:active {
-  background: #ffcccc !important;
-  color: #840000 !important;
+.user-section:hover img {
+  border-color: #ff5a00;
 }
 
 /* ==========================
    DROPDOWN MENU
    ========================== */
 .dropdown-menu {
-  border-radius: 8px !important;
+  border-radius: 10px !important;
   padding: 8px 0 !important;
+  border: 1px solid #e5e7eb !important;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05) !important;
+  margin-top: 8px !important;
+  min-width: 280px;
+}
+
+/* Ensure dropdown menus align properly */
+.dropdown-menu.show {
+  display: block !important;
+}
+
+/* Fix positioning for right-aligned dropdowns */
+.smart-navbar .dropdown-menu[data-bs-popper] {
+  margin-top: 8px !important;
+  top: 100% !important;
+}
+
+/* Ensure dropdowns align to the right edge of their triggers */
+.smart-navbar .dropdown-menu[data-bs-popper][data-popper-placement^="bottom-end"],
+.smart-navbar .dropdown-menu[data-bs-popper][data-popper-placement^="bottom"] {
+  right: 0 !important;
+  left: auto !important;
+}
+
+.dropdown-item {
+  padding: 10px 16px !important;
+  font-size: 0.9rem;
+  color: #374151;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+}
+
+.dropdown-item:hover {
+  background-color: #fafbfc;
+  color: #1f2937;
+}
+
+.dropdown-item i {
+  font-size: 1rem;
+  margin-right: 10px;
+  width: 18px;
+  text-align: center;
+}
+
+.dropdown-item-text {
+  padding: 12px 16px !important;
+  color: #1f2937;
+  background-color: #fafafa;
+  margin-bottom: 0 !important;
+  text-align: center;
+}
+
+.dropdown-item-text div {
+  margin-bottom: 0 !important;
+}
+
+.dropdown-item-text img {
+  margin-bottom: 0 !important;
+}
+
+.dropdown-item-text strong {
+  font-weight: 600;
+  font-size: 0.95rem;
+  color: #111827;
+  display: block;
+  margin-top: 6px;
+  margin-bottom: 2px;
+}
+
+.dropdown-item-text small {
+  color: #6b7280;
+  font-size: 0.85rem;
+  display: block;
+  margin-bottom: 4px;
+}
+
+.dropdown-item-text .badge {
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 4px 10px;
+  margin-top: 2px;
+  border-radius: 6px;
+  display: inline-block;
+}
+
+.dropdown-divider {
+  margin: 8px 0 !important;
+  border-top: 1px solid #e5e7eb !important;
+}
+
+/* ==========================
+   LOGOUT BUTTON
+   ========================== */
+.dropdown-item.logout-btn {
+  color: #dc2626 !important;
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+
+.dropdown-item.logout-btn:hover {
+  background-color: #fef2f2 !important;
+  color: #b91c1c !important;
+}
+
+.dropdown-item.logout-btn:active {
+  background-color: #fee2e2 !important;
+  color: #991b1b !important;
+}
+
+/* ==========================
+   NAVBAR TOGGLE (Mobile)
+   ========================== */
+.smart-navbar .navbar-toggler {
+  border: 1px solid #e5e7eb;
+  padding: 6px 10px;
+  border-radius: 6px;
+  transition: all 0.2s ease;
+}
+
+.smart-navbar .navbar-toggler:hover {
+  background-color: #f9fafb;
+  border-color: #ff5a00;
+}
+
+.smart-navbar .navbar-toggler:focus {
+  box-shadow: 0 0 0 3px rgba(255, 90, 0, 0.1);
+}
+
+.smart-navbar .navbar-toggler-icon {
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba%2833, 37, 41, 0.75%29' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
 }

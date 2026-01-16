@@ -1,0 +1,145 @@
+/* ============================
+   CREATE USER MODAL
+============================= */
+
+.create-user-modal .modal-content {
+  border-radius: 14px;
+  border: none;
+  box-shadow: 0 10px 40px rgba(0,0,0,0.15);
+}
+
+.create-user-modal .modal-header {
+  background: linear-gradient(135deg, #ffecd2, #fcb69f);
+  border-bottom: none;
+  border-top-left-radius: 14px;
+  border-top-right-radius: 14px;
+}
+
+.create-user-modal .modal-title {
+  font-weight: 700;
+  color: #5c2c06;
+}
+
+.create-user-modal .modal-body {
+  padding: 1.8rem;
+}
+
+.create-user-modal h6 {
+  font-weight: 600;
+  color: #444;
+  margin-bottom: 1rem;
+}
+
+.create-user-modal .form-control,
+.create-user-modal .form-select {
+  border-radius: 8px;
+  font-size: 0.95rem;
+}
+
+.create-user-modal .form-control:focus,
+.create-user-modal .form-select:focus {
+  border-color: #ff9f43;
+  box-shadow: 0 0 0 0.15rem rgba(255, 159, 67, 0.25);
+}
+
+.create-user-modal .progress {
+  height: 8px;
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.create-user-modal .progress-bar {
+  background: linear-gradient(90deg, #ff9f43, #ff7a18);
+}
+
+.create-user-modal .modal-footer {
+  border-top: none;
+  padding: 1.2rem 1.8rem;
+}
+
+/* Button styles are now inherited from global/buttons.css */
+.create-user-modal .btn {
+  padding: 0.5rem 1.4rem;
+  border-radius: 8px;
+  font-weight: 600;
+}
+
+.create-user-modal .form-check-label {
+  font-size: 0.9rem;
+  color: #555;
+}
+
+.cu-select-wrapper {
+  position: relative;
+  width: 100%;
+}
+
+.cu-label {
+  display: block;
+  font-weight: 600;
+  font-size: 0.95rem;
+  color: #334155;
+  margin-bottom: 8px;
+}
+
+.cu-select-trigger {
+  background: #f8f9fa;
+  border: 1px solid #ced4da;
+  padding: 10px 12px;
+  border-radius: 10px;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.cu-select-trigger:hover {
+  border-color: #fd7e14;
+  box-shadow: 0 0 0 2px rgba(253,126,20,0.15);
+}
+
+.cu-select-options {
+  position: absolute;
+  top: calc(100% + 6px);
+  left: 0;
+  width: 100%;
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+  z-index: 1000;
+  overflow: hidden;
+}
+
+/* When inside a dropdown menu, increase z-index and ensure visibility */
+.dropdown-menu .cu-select-wrapper {
+  position: relative;
+}
+
+.dropdown-menu .cu-select-options {
+  z-index: 1050;
+  position: absolute;
+  top: calc(100% + 6px);
+  left: 0;
+  width: 100%;
+  min-width: 100%;
+}
+
+.cu-select-option {
+  padding: 10px 12px;
+  cursor: pointer;
+}
+
+.cu-select-option:hover {
+  background: rgba(253,126,20,0.12);
+}
+
+.cu-select-option.active {
+  background: rgba(253,126,20,0.2);
+  font-weight: 600;
+}
+
+.cu-select-arrow {
+  font-size: 12px;
+  opacity: 0.6;
+}
+

@@ -11,59 +11,73 @@ const Navbar = ({ user, onLogout }) => {
   const [notifications, setNotifications] = useState([]);
   const [unreadCount, setUnreadCount] = useState(0);
 
-  // === SOUND SETUP ===
   const soundRef = useRef(null);
-  const prevUnreadRef = useRef(null); // Start as null to ignore first fetch
+  const prevUnreadRef = useRef(null);
+  const soundEnabledRef = useRef(false);
 
-  // === INITIAL SETUP ===
   useEffect(() => {
+    // Unlock audio on first user interaction (required by browsers)
     const unlockSound = () => {
-      if (soundRef.current) soundRef.current.load();
+      if (soundRef.current) {
+        soundRef.current.load();
+        // Also try to play and immediately pause to fully unlock
+        soundRef.current.play().then(() => {
+          soundRef.current.pause();
+          soundRef.current.currentTime = 0;
+        }).catch(() => {});
+      }
       window.removeEventListener('click', unlockSound);
+      window.removeEventListener('touchstart', unlockSound);
     };
     window.addEventListener('click', unlockSound);
+    window.addEventListener('touchstart', unlockSound);
 
-    fetchNotifications(); // Initial fetch
-    const interval = setInterval(fetchNotifications, 8000); // Poll every 8 sec
+    fetchNotifications();
+    const interval = setInterval(fetchNotifications, 8000);
+
+    // Enable sound after 3 seconds to prevent playing on page reload
+    const soundTimer = setTimeout(() => {
+      soundEnabledRef.current = true;
+    }, 3000);
 
     return () => {
       clearInterval(interval);
+      clearTimeout(soundTimer);
       window.removeEventListener('click', unlockSound);
+      window.removeEventListener('touchstart', unlockSound);
     };
   }, []);
 
-  // === FETCH NOTIFICATIONS ===
   const fetchNotifications = async () => {
     try {
       const response = await api.get('/notifications');
       const notifList = response.data.data || [];
+      // Use the actual unread count from the API (not limited by pagination)
+      const newUnreadCount = response.data.unread_count ?? notifList.filter(n => !n.is_read).length;
 
-      const unread = notifList.filter(n => !n.is_read).length;
+      // Play sound if count increased and sound is enabled
+      if (soundEnabledRef.current && prevUnreadRef.current !== null && newUnreadCount > prevUnreadRef.current) {
+        playSound();
+      }
+
+      // Update previous count (initialize on first fetch)
+      prevUnreadRef.current = newUnreadCount;
 
       setNotifications(notifList.slice(0, 5));
-      setUnreadCount(unread);
+      setUnreadCount(newUnreadCount);
     } catch (error) {
       console.error("Failed to fetch notifications:", error);
     }
   };
 
-  // === PLAY SOUND WHEN UNREAD COUNT INCREASES ===
-  useEffect(() => {
-    if (prevUnreadRef.current !== null && unreadCount > prevUnreadRef.current) {
-      playSound();
-    }
-    prevUnreadRef.current = unreadCount; // Always update after check
-  }, [unreadCount]);
-
   const playSound = () => {
     if (!soundRef.current) return;
     soundRef.current.currentTime = 0;
-    soundRef.current.play().catch(err => {
-      console.warn("Audio blocked until user interaction:", err);
+    soundRef.current.play().catch((err) => {
+      console.log("Sound play failed:", err);
     });
   };
 
-  // === MARK NOTIFICATIONS AS READ ===
   const markAsRead = async (id) => {
     try {
       await api.post(`/notifications/${id}/read`);
@@ -89,61 +103,42 @@ const Navbar = ({ user, onLogout }) => {
     <>
       <BSNavbar expand="lg" className="smart-navbar shadow-sm">
         <Container>
-          <BSNavbar.Brand as={Link} to="/dashboard" className="brand-wrapper">
-            <img
-              src="/logo-SMD.png"
-              alt="SMART-DOCS Logo"
-              height="45"
-              className="brand-logo"
-            />
-            <span className="brand-text">
-              <span className="smart">SMART</span>
-              <span className="docs">DOCS</span>
-            </span>
-          </BSNavbar.Brand>
-
+          {/* Show logo for level 2 and below (level 3+ have logo in sidebar) */}
+          {user.access_level <= 2 && (
+            <BSNavbar.Brand as={Link} to="/dashboard" className="navbar-brand-logo">
+              <img src="/logo-SMD.png" alt="SMART-DOCS Logo" className="brand-logo" />
+              <span className="brand-text">
+                <span className="smart">SMART</span>
+                <span className="docs">DOCS</span>
+              </span>
+            </BSNavbar.Brand>
+          )}
           <BSNavbar.Toggle aria-controls="basic-navbar-nav" />
           <BSNavbar.Collapse id="basic-navbar-nav">
-            <Nav className="me-auto nav-links">
-              <Nav.Link
-                as={Link}
-                to="/dashboard"
-                className={isActive('/dashboard') ? 'active-link' : ''}
-              >
-                <i className="bi bi-house-door me-2"></i> Dashboard
-              </Nav.Link>
+            {/* Show navigation links for level 2 and below (level 3+ use sidebar) */}
+            {user.access_level <= 2 && (
+              <Nav className="me-auto nav-links">
+                {/* Dashboard - All levels */}
+                <Nav.Link as={Link} to="/dashboard" className={isActive('/dashboard') ? 'active-link' : ''}>
+                  <i className="bi bi-house-door me-2"></i> Dashboard
+                </Nav.Link>
 
-              <Nav.Link
-                as={Link}
-                to="/document"
-                className={isActive('/document') ? 'active-link' : ''}
-              >
-                <i className="bi bi-file-earmark-text me-2"></i> Documents
-              </Nav.Link>
+                {/* Documents - All levels */}
+                <Nav.Link as={Link} to="/document" className={isActive('/document') ? 'active-link' : ''}>
+                  <i className="bi bi-file-earmark-text me-2"></i> Documents
+                </Nav.Link>
 
-              {(user.role === 'admin' || user.role === 'staff') && (
-                <>
-                  <Nav.Link
-                    as={Link}
-                    to="/upload"
-                    className={isActive('/upload') ? 'active-link' : ''}
-                  >
+                {/* Upload - Level 2+ */}
+                {user.access_level >= 2 && (
+                  <Nav.Link as={Link} to="/upload" className={isActive('/upload') ? 'active-link' : ''}>
                     <i className="bi bi-cloud-upload me-2"></i> Upload
                   </Nav.Link>
+                )}
+              </Nav>
+            )}
 
-                  <Nav.Link
-                    as={Link}
-                    to="/users"
-                    className={isActive('/users') ? 'active-link' : ''}
-                  >
-                    <i className="bi bi-people me-2"></i> Users
-                  </Nav.Link>
-                </>
-              )}
-            </Nav>
-
-            <Nav className="align-items-center">
-              {/* NOTIFICATIONS */}
+            <Nav className="ms-auto align-items-center">
+              {/* Notifications */}
               <NavDropdown
                 title={
                   <span className="notif-icon-wrapper">
@@ -180,12 +175,13 @@ const Navbar = ({ user, onLogout }) => {
                           }
                         }}
                       >
-                        <strong className="d-block">{notif.title}</strong>
-                        <small className="text-muted">{notif.message}</small>
-                        <br />
-                        <small className="text-muted">
-                          {new Date(notif.created_at).toLocaleString()}
-                        </small>
+                        <div className="text-start">
+                          <strong className="d-block mb-1">{notif.title}</strong>
+                          <small className="text-muted d-block mb-1">{notif.message}</small>
+                          <small className="text-muted">
+                            {new Date(notif.created_at).toLocaleString()}
+                          </small>
+                        </div>
                       </Dropdown.Item>
                     ))
                   ) : (
@@ -197,11 +193,36 @@ const Navbar = ({ user, onLogout }) => {
                 </div>
               </NavDropdown>
 
-              {/* USER DROPDOWN */}
+              {/* User Dropdown */}
               <NavDropdown
                 title={
                   <span className="user-section">
-                    <i className="bi bi-person-circle me-2"></i>
+                    {user.profile_picture || user.avatar || user.info?.profile_picture ? (
+                      <img 
+                        src={user.profile_picture || user.avatar || user.info?.profile_picture} 
+                        alt={user.name}
+                        style={{ 
+                          width: '32px', 
+                          height: '32px', 
+                          borderRadius: '50%', 
+                          objectFit: 'cover',
+                          marginRight: '8px'
+                        }}
+                      />
+                    ) : (
+                      <div style={{
+                        width: '32px',
+                        height: '32px',
+                        borderRadius: '50%',
+                        background: 'linear-gradient(135deg, #f97316 0%, #fb923c 100%)',
+                        display: 'inline-flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        marginRight: '8px'
+                      }}>
+                        <i className="bi bi-person-fill" style={{ fontSize: '16px', color: '#ffffff' }}></i>
+                      </div>
+                    )}
                     {user.name}
                   </span>
                 }
@@ -209,23 +230,60 @@ const Navbar = ({ user, onLogout }) => {
                 id="user-dropdown"
               >
                 <Dropdown.ItemText>
+                  <div className="text-center">
+                    {user.profile_picture || user.avatar || user.info?.profile_picture ? (
+                      <img 
+                        src={user.profile_picture || user.avatar || user.info?.profile_picture} 
+                        alt={user.name}
+                        style={{ 
+                          width: '64px', 
+                          height: '64px', 
+                          borderRadius: '50%', 
+                          objectFit: 'cover'
+                        }}
+                      />
+                    ) : (
+                      <div style={{
+                        width: '64px',
+                        height: '64px',
+                        borderRadius: '50%',
+                        background: 'linear-gradient(135deg, #f97316 0%, #fb923c 100%)',
+                        display: 'inline-flex',
+                        alignItems: 'center',
+                        justifyContent: 'center'
+                      }}>
+                        <i className="bi bi-person-fill" style={{ fontSize: '32px', color: '#ffffff' }}></i>
+                      </div>
+                    )}
+                  </div>
                   <strong>{user.name}</strong>
-                  <br />
                   <small className="text-muted">{user.email}</small>
-                  <br />
                   <Badge
                     bg={
-                      user.role === 'admin'
+                      user.access_level >= 4
                         ? 'danger'
-                        : user.role === 'staff'
+                        : user.access_level >= 3
                         ? 'warning'
+                        : user.access_level >= 2
+                        ? 'primary'
                         : 'info'
                     }
-                    className="mt-2"
                   >
-                    {user.role.toUpperCase()} • Level {user.access_level || '1'}
+                    {user.access_level >= 4 
+                      ? 'Super Admin' 
+                      : user.access_level >= 3 
+                      ? 'Department Head' 
+                      : user.access_level >= 2 
+                      ? 'Contributor' 
+                      : 'Basic User'} • Level {user.access_level || '1'}
                   </Badge>
                 </Dropdown.ItemText>
+
+                <Dropdown.Divider />
+
+                <Dropdown.Item onClick={() => navigate('/profile')}>
+                  <i className="bi bi-person me-2"></i> My Profile
+                </Dropdown.Item>
 
                 <Dropdown.Divider />
 
@@ -238,7 +296,6 @@ const Navbar = ({ user, onLogout }) => {
         </Container>
       </BSNavbar>
 
-      {/* HIDDEN AUDIO TAG */}
       <audio ref={soundRef} preload="auto">
         <source src="/sounds/notification.mp3" type="audio/mpeg" />
       </audio>

@@ -3,15 +3,14 @@
    ========================== */
 
 .document-view-container {
-  padding: 25px 60px 25px 85px !important; 
-  background: #f8f9fb;
+  padding: 32px 40px 40px 40px;
+  background: #f5f7fa;
   min-height: 100vh;
-  transition: none !important;
 }
 
 @media (max-width: 992px) {
   .document-view-container {
-    padding: 20px 20px 40px 20px;
+    padding: 24px 24px 32px 24px;
   }
 }
 
@@ -20,52 +19,75 @@
    ========================== */
 .doc-info-card {
   border-radius: 12px;
-  background-color: #ffffff;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.04), 0 1px 2px 0 rgba(0, 0, 0, 0.02);
+  transition: box-shadow 0.2s ease, border-color 0.2s ease;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
-  min-height: 400px; /* slightly smaller */
+  min-height: 400px;
 }
 
-.doc-info-card:hover, .recepients-card:hover,
-.activity-card:hover, .qr-card:hover {
-  transform: none !important;
+.doc-info-card:hover {
+  box-shadow: 0 4px 12px 0 rgba(0, 0, 0, 0.08), 0 2px 4px 0 rgba(0, 0, 0, 0.04);
+  border-color: #cbd5e1;
+}
+
+.doc-info-card .card-header {
+  background: #ffffff !important;
+  border-bottom: 1px solid #e2e8f0;
+  padding: 12px 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-weight: 500;
+  height: 48px;
+  box-sizing: border-box;
+}
+
+.doc-info-card .card-header h5 {
+  font-weight: 600;
+  font-size: 1rem;
+  color: #1a1f2e;
+  margin: 0;
+  letter-spacing: -0.01em;
+  display: flex;
+  align-items: center;
+  line-height: 1.2;
+}
+
+.doc-info-card .card-header h5 i {
+  font-size: 1.125rem;
+  color: #f97316;
+  margin-right: 8px;
+}
+
+.doc-info-card .card-body {
+  padding: 24px;
 }
 
 .doc-info-card h2 {
-  font-size: 26px;
-  margin-bottom: 10px;
+  font-weight: 700;
+  font-size: 1.75rem;
+  color: #1a1f2e;
+  margin-bottom: 8px;
+  letter-spacing: -0.02em;
 }
 
 .doc-info-card p.text-muted {
-  font-size: 14px;
+  font-size: 0.9375rem;
+  color: #64748b;
+  margin-bottom: 0;
 }
 
-.doc-info-card .d-flex.gap-3 span {
-  font-size: 14px;
-}
-
-.doc-info-card .btn {
-  font-size: 14px;
-  padding: 6px 14px;
-}
-
-.dropdown-qr-actions {
-  background-color: #f97316 !important;
-  border-color: #f97316 !important;
-  color: white !important;
-}
-
-.dropdown-qr-actions:hover {
-  background-color: #e6630d !important;
-  border-color: #e6630d !important;
-  transform: none !important;
-  box-shadow: none;
-}
-
-.doc-info-card .badge {
-  font-size: 13px;
+.doc-info-card code {
+  background: #f1f5f9;
+  color: #475569;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  font-family: 'SF Mono', 'Monaco', 'Inconsolata', 'Roboto Mono', monospace;
 }
 
 /* ==========================
@@ -73,23 +95,107 @@
    ========================== */
 .recepients-card {
   border-radius: 12px;
-  padding: 0;
-  background-color: #ffffff;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.04), 0 1px 2px 0 rgba(0, 0, 0, 0.02);
+  transition: box-shadow 0.2s ease, border-color 0.2s ease;
+  overflow: hidden;
+}
+
+.recepients-card:hover {
+  box-shadow: 0 4px 12px 0 rgba(0, 0, 0, 0.08), 0 2px 4px 0 rgba(0, 0, 0, 0.04);
+  border-color: #cbd5e1;
+}
+
+.recepients-card .card-header {
+  background: #ffffff !important;
+  border-bottom: 1px solid #e2e8f0;
+  padding: 12px 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-weight: 500;
+  height: 48px;
+  box-sizing: border-box;
 }
 
 .recepients-card .card-header h5 {
-  font-size: 18px;
+  font-weight: 600;
+  font-size: 1rem;
+  color: #1a1f2e;
+  margin: 0;
+  letter-spacing: -0.01em;
+  display: flex;
+  align-items: center;
+  line-height: 1.2;
+}
+
+.recepients-card .card-header h5 i {
+  font-size: 1.125rem;
+  color: #f97316;
+  margin-right: 8px;
 }
 
 .recepients-card table {
   margin-bottom: 0;
-  font-size: 14px;
 }
 
-.recepients-card table th, 
-.recepients-card table td {
+.recepients-card table thead th {
+  font-weight: 600;
+  font-size: 0.8125rem;
+  color: #475569;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  background: #f8fafc;
+  border-bottom: 2px solid #e2e8f0;
+  padding: 6px 16px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.recepients-card table tbody td {
+  font-weight: 400;
+  font-size: 0.9375rem;
+  color: #334155;
+  padding: 16px;
+  border-bottom: 1px solid #f1f5f9;
   vertical-align: middle;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.recepients-card table tbody tr {
+  transition: background-color 0.15s ease;
+}
+
+.recepients-card table tbody tr:hover {
+  background-color: #f8fafc !important;
+}
+
+.recepients-card table.table-hover tbody tr:hover,
+.recepients-card table.table-hover tbody tr:focus,
+.recepients-card .table-hover > tbody > tr:hover > * {
+  background-color: #f8fafc !important;
+  box-shadow: none !important;
+}
+
+.recepients-card table tbody td .fw-semibold {
+  font-weight: 500;
+  color: #1e293b;
+}
+
+.recepients-card table tbody td small {
+  font-size: 0.8125rem;
+  color: #64748b;
+  font-weight: 400;
+}
+
+/* Recipient avatar styling */
+.recepients-card .bg-secondary {
+  background: #f97316 !important;
+  font-weight: 600;
+  letter-spacing: 0.01em;
 }
 
 /* ==========================
@@ -97,21 +203,79 @@
    ========================== */
 .qr-card {
   border-radius: 12px;
-  background-color: #ffffff;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.04), 0 1px 2px 0 rgba(0, 0, 0, 0.02);
+  transition: box-shadow 0.2s ease, border-color 0.2s ease;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
-  min-height: 400px; /* maintain same height as doc-info */
+  min-height: 400px;
   z-index: 1;
 }
 
-.qr-card .card-header h5 {
-  font-size: 18px;
+.qr-card:hover {
+  box-shadow: 0 4px 12px 0 rgba(0, 0, 0, 0.08), 0 2px 4px 0 rgba(0, 0, 0, 0.04);
+  border-color: #cbd5e1;
 }
 
-.qr-card .d-grid button {
-  font-size: 13px;
+.qr-card .card-header {
+  background: #ffffff !important;
+  border-bottom: 1px solid #e2e8f0;
+  padding: 12px 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-weight: 500;
+  height: 48px;
+  box-sizing: border-box;
+}
+
+.qr-card .card-header h5 {
+  font-weight: 600;
+  font-size: 1rem;
+  color: #1a1f2e;
+  margin: 0;
+  letter-spacing: -0.01em;
+  display: flex;
+  align-items: center;
+  line-height: 1.2;
+}
+
+.qr-card .card-header h5 i {
+  font-size: 1.125rem;
+  color: #f97316;
+  margin-right: 8px;
+}
+
+.qr-card .card-body {
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex: 1;
+}
+
+/* Dropdown button color */
+.dropdown-qr-actions {
+  background-color: #f97316 !important;
+  border-color: #f97316 !important;
+  color: white !important;
+  font-weight: 500;
+  border-radius: 6px;
+  padding: 8px 16px;
+  transition: background-color 0.2s ease, border-color 0.2s ease;
+}
+
+.dropdown-qr-actions:hover {
+  background-color: #ea580c !important;
+  border-color: #ea580c !important;
+}
+
+/* Dropdown menu highlight */
+.dropdown-menu .dropdown-item:hover,
+.dropdown-menu .dropdown-item:focus {
+  background-color: #f97316 !important;
+  color: #fff !important;
 }
 
 /* ==========================
@@ -119,93 +283,407 @@
    ========================== */
 .activity-card {
   border-radius: 12px;
-  padding: 0;
-  background-color: #ffffff;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.04), 0 1px 2px 0 rgba(0, 0, 0, 0.02);
+  transition: box-shadow 0.2s ease, border-color 0.2s ease;
+  overflow: hidden;
+}
+
+.activity-card:hover {
+  box-shadow: 0 4px 12px 0 rgba(0, 0, 0, 0.08), 0 2px 4px 0 rgba(0, 0, 0, 0.04);
+  border-color: #cbd5e1;
+}
+
+.activity-card .card-header {
+  background: #ffffff !important;
+  border-bottom: 1px solid #e2e8f0;
+  padding: 12px 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-weight: 500;
+  height: 48px;
+  box-sizing: border-box;
 }
 
 .activity-card .card-header h5 {
-  font-size: 18px;
+  font-weight: 600;
+  font-size: 1rem;
+  color: #1a1f2e;
+  margin: 0;
+  letter-spacing: -0.01em;
+  display: flex;
+  align-items: center;
+  line-height: 1.2;
 }
 
+.activity-card .card-header h5 i {
+  font-size: 1.125rem;
+  color: #f97316;
+  margin-right: 8px;
+}
+
+.activity-card .card-body {
+  padding: 24px;
+}
+
+/* Activity item styling - matching admin design */
 .activity-card .d-flex.mb-3 {
-  gap: 12px;
+  gap: 16px;
+  padding: 16px;
+  border-radius: 10px;
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  transition: background-color 0.15s ease, border-color 0.15s ease;
+  margin-bottom: 16px;
 }
 
-.activity-card .d-flex.mb-3 .bg-primary {
-  font-size: 16px;
+.activity-card .d-flex.mb-3:hover {
+  background: #f8fafc;
+  border-color: #cbd5e1;
+}
+
+.activity-card .d-flex.mb-3:last-child {
+  margin-bottom: 0;
+}
+
+.activity-card .d-flex.mb-3 .bg-primary,
+.activity-card .d-flex.mb-3 .rounded-circle {
+  width: 48px;
+  height: 48px;
+  border-radius: 10px !important;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 1.25rem;
+  color: #ffffff;
+  background: #f97316 !important;
+  flex-shrink: 0;
+}
+
+.activity-card .d-flex.mb-3 .flex-grow-1 {
+  flex: 1;
+  min-width: 0;
+}
+
+.activity-card .d-flex.mb-3 p {
+  margin: 0 0 6px 0;
+  font-size: 0.9375rem;
+  font-weight: 400;
+  color: #334155;
+  line-height: 1.5;
+}
+
+.activity-card .d-flex.mb-3 p strong {
+  font-weight: 600;
+  color: #1e293b;
+}
+
+.activity-card .d-flex.mb-3 small {
+  font-size: 0.8125rem;
+  color: #64748b;
+  font-weight: 400;
 }
 
 /* ==========================
-   GENERAL BUTTONS
+   BUTTON SYSTEM
+   Note: Global button styles are imported from css/global/buttons.css
+   Only page-specific button overrides should be defined here
    ========================== */
-.btn-primary, .btn-success, .btn-outline-primary, .btn-outline-secondary {
-  transition: background-color 0.2s ease, color 0.2s ease;
-}
-
-.btn-primary:hover {
-  background-color: #004085;
-  color: #fff;
-}
-
-.btn-outline-primary:hover {
-  background-color: #0d6efd;
-  color: #fff;
-}
-
-.btn-outline-secondary:hover {
-  background-color: #6c757d;
-  color: #fff;
-}
-
-.back-btn {
-  background-color: #f97316 !important;
-  border-color: #f97316 !important;
-  color: white !important;
-}
-
-.back-btn:hover {
-  background-color: #e6630d !important;
-  border-color: #e6630d !important;
-  transform: none !important;
-  box-shadow: none;
-}
-
-/* Search button */
-.download-btn {
-  background-color: #16a34a !important;
-  border-color: #16a34a !important;
-  color: white !important;
-}
-.download-btn:hover {
-  background-color: #128c3f !important;
-  border-color: #128c3f !important;
-  transform: none;
-  box-shadow: none;
-}
 
 /* ==========================
    ALERT
    ========================== */
-.alert-success {
+.document-view-container .alert {
   border-radius: 8px;
-  font-size: 14px;
+  font-size: 0.9375rem;
+  border: 1px solid;
 }
 
-/* ==========================
-   TABLE
-   ========================== */
-.table-hover tbody tr:hover {
-  background-color: #f1f1f1;
+.document-view-container .alert-success {
+  background-color: #f0fdf4;
+  border-color: #86efac;
+  color: #166534;
 }
 
 /* ==========================
    BADGES
    ========================== */
-.badge {
-  font-size: 13px;
+.document-view-container .badge {
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 4px 10px;
   border-radius: 6px;
-  padding: 4px 8px;
+  letter-spacing: 0.01em;
+}
+
+.document-view-container .badge.bg-success {
+  background-color: #22C55E !important;
+  color: #ffffff !important;
+}
+
+.document-view-container .badge.bg-info {
+  background-color: #3B82F6 !important;
+  color: #ffffff !important;
+}
+
+.document-view-container .badge.bg-secondary {
+  background-color: #64748B !important;
+  color: #ffffff !important;
+}
+
+.document-view-container .badge.bg-primary {
+  background-color: #0d6efd !important;
+  color: #ffffff !important;
+}
+
+.document-view-container .badge.bg-warning {
+  background-color: #F59E0B !important;
+  color: #ffffff !important;
+}
+
+.document-view-container .badge.bg-danger {
+  background-color: #EF4444 !important;
+  color: #ffffff !important;
+}
+
+/* Badge with icons */
+.document-view-container .badge i {
+  font-size: 0.6875rem;
+  margin-right: 4px;
+}
+
+/* ==========================
+   WORKFLOW STATUS CARD
+   ========================== */
+.document-view-container .card {
+  border-radius: 12px;
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.04), 0 1px 2px 0 rgba(0, 0, 0, 0.02);
+  transition: box-shadow 0.2s ease, border-color 0.2s ease;
+}
+
+.document-view-container .card:hover {
+  box-shadow: 0 4px 12px 0 rgba(0, 0, 0, 0.08), 0 2px 4px 0 rgba(0, 0, 0, 0.04);
+  border-color: #cbd5e1;
+}
+
+.document-view-container .card-header {
+  background: #ffffff !important;
+  border-bottom: 1px solid #e2e8f0;
+  padding: 12px 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.document-view-container .card-header h6 {
+  font-weight: 600;
+  font-size: 1rem;
+  color: #1a1f2e;
+  margin: 0;
+  letter-spacing: -0.01em;
+  display: flex;
+  align-items: center;
+}
+
+.document-view-container .card-header h6 i {
+  font-size: 1.125rem;
+  color: #f97316;
+  margin-right: 8px;
+}
+
+.document-view-container .card-body {
+  padding: 24px;
+}
+
+.document-view-container .card-body strong {
+  font-weight: 600;
+  color: #1e293b;
+}
+
+.document-view-container .card-body small {
+  font-size: 0.8125rem;
+  color: #64748b;
+}
+
+/* ==========================
+   PAGINATION
+   ========================== */
+.document-view-container .pagination {
+  margin: 16px 0;
+  gap: 4px;
+}
+
+.document-view-container .pagination .page-item .page-link {
+  border-color: #e2e8f0;
+  color: #475569;
+  padding: 8px 12px;
+  border-radius: 6px;
+  font-weight: 500;
+  transition: all 0.15s ease;
+  margin: 0 2px;
+}
+
+.document-view-container .pagination .page-item.active .page-link {
+  background-color: #f97316 !important;
+  border-color: #f97316 !important;
+  color: white !important;
+}
+
+.document-view-container .pagination .page-item:not(.active):not(.disabled) .page-link:hover {
+  background-color: #fff5f0 !important;
+  color: #f97316 !important;
+  border-color: #f97316 !important;
+}
+
+.document-view-container .pagination .page-item.disabled .page-link {
+  color: #cbd5e1 !important;
+  background-color: #ffffff !important;
+  border-color: #e2e8f0 !important;
+  cursor: not-allowed;
+}
+
+/* ==========================
+   FORM CONTROLS - ORANGE FOCUS
+   ========================== */
+.document-view-container .form-control:focus,
+.document-view-container .form-select:focus,
+.document-view-container input:focus,
+.document-view-container textarea:focus {
+  border-color: #f97316 !important;
+  box-shadow: 0 0 0 3px rgba(249, 115, 22, 0.1) !important;
+  outline: none !important;
+}
+
+.document-view-container .form-control,
+.document-view-container .form-select {
+  border-color: #e2e8f0;
+  border-radius: 6px;
+  padding: 8px 12px;
+  font-size: 0.9375rem;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.document-view-container .form-control:hover,
+.document-view-container .form-select:hover {
+  border-color: #cbd5e1;
+}
+
+.document-view-container .form-label {
+  font-weight: 500;
+  font-size: 0.875rem;
+  color: #475569;
+  margin-bottom: 6px;
+}
+
+/* ==========================
+   SPINNER
+   ========================== */
+.document-view-container .spinner-border {
+  width: 3rem;
+  height: 3rem;
+  border-width: 0.3em;
+  color: #f97316;
+}
+
+/* ==========================
+   QR IMAGE INSIDE QR CARD
+   ========================== */
+.qr-card .qr-image {
+  width: 100%;
+  max-width: 280px;
+  height: auto;
+  margin: 0 auto;
+  display: block;
+}
+
+/* QR Code container styling */
+.qr-card .p-3.rounded-3 {
+  border-radius: 12px !important;
+  background: #f8fafc !important;
+  box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.06) !important;
+  border: 1px solid #e2e8f0 !important;
+}
+
+/* ==========================
+   METADATA STYLING
+   ========================== */
+.document-view-container .text-uppercase {
+  font-size: 0.75rem;
+  color: #64748b;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  margin-bottom: 4px;
+  line-height: 1.2;
+}
+
+.document-view-container .fw-bold {
+  font-weight: 600;
+  color: #1e293b;
+  font-size: 0.9375rem;
+  line-height: 1.4;
+}
+
+.document-view-container .text-muted {
+  font-size: 0.8125rem;
+  color: #64748b;
+  font-weight: 400;
+}
+
+/* ==========================
+   SCROLLBAR STYLING
+   ========================== */
+.document-view-container ::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+.document-view-container ::-webkit-scrollbar-track {
+  background: #f8fafc;
+}
+
+.document-view-container ::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 3px;
+}
+
+.document-view-container ::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
+
+/* ==========================
+   PAGINATION BUTTONS IN CARDS
+   Note: Base styles are in global/buttons.css
+   ========================== */
+.recepients-card .btn-outline-secondary,
+.activity-card .btn-outline-secondary {
+  padding: 6px 12px;
+  font-size: 0.875rem;
+}
+
+.recepients-card .btn-outline-secondary:disabled,
+.activity-card .btn-outline-secondary:disabled {
+  color: #cbd5e1 !important;
+  background-color: #ffffff !important;
+  border-color: #e2e8f0 !important;
+  cursor: not-allowed;
+}
+
+.recepients-card .border-top,
+.activity-card .border-top {
+  border-top: 1px solid #f1f5f9 !important;
+  padding-top: 12px;
+  margin-top: 12px;
+}
+
+.recepients-card .text-muted.small,
+.activity-card .text-muted.small {
+  font-size: 0.8125rem;
+  color: #64748b;
+  font-weight: 400;
 }
 
 /* ==========================
@@ -217,7 +695,6 @@
     top: 0;
     margin-bottom: 20px;
     min-height: auto !important;
-    padding: 20px; /* adjust for mobile */
   }
 
   .doc-info-card, .recepients-card, .activity-card {
@@ -226,25 +703,30 @@
   }
 }
 
-/* ==========================
-   FLEX WRAPPER FOR LAYOUT
-   ========================== */
-.document-view-row {
-  display: flex;
-  gap: 20px;
-  align-items: stretch; /* stretch columns to same height */
-}
+@media (max-width: 768px) {
+  .document-view-container {
+    padding: 20px 16px 32px 16px;
+  }
 
-.document-view-row .left-column {
-  flex: 2; /* doc info and activity cards */
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-}
+  .doc-info-card h2 {
+    font-size: 1.5rem;
+  }
 
-.document-view-row .right-column {
-  flex: 1.1; /* slightly bigger QR card column */
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
+  .doc-info-card .card-body,
+  .recepients-card .card-body,
+  .activity-card .card-body,
+  .qr-card .card-body {
+    padding: 16px;
+  }
+
+  .recepients-card .card-header,
+  .activity-card .card-header,
+  .qr-card .card-header,
+  .doc-info-card .card-header {
+    padding: 12px 16px;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+    height: auto;
+  }
 }

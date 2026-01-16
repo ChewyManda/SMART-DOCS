@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Form, Button, Alert, Spinner } from 'react-bootstrap';
 import { BsEye, BsEyeSlash } from "react-icons/bs";
+import { Link } from 'react-router-dom';
 import api from '../../services/api';
 import '../../css/account/login.css';
 
@@ -37,8 +38,6 @@ const Login = ({ onLogin }) => {
 
     try {
       const response = await api.post('/login', formData);
-      localStorage.setItem('token', response.data.token);
-      localStorage.setItem('user', JSON.stringify(response.data.user));
       onLogin(response.data.user, response.data.token);
     } catch (err) {
       setError(err.response?.data?.message || 'Invalid credentials');
@@ -53,23 +52,19 @@ const Login = ({ onLogin }) => {
       {/* LEFT SIDE */}
       <div className="login-left d-flex flex-column justify-content-center align-items-center text-white p-5 text-center">
 
-        {/* Logos */}
         <div className="d-flex align-items-center mb-4">
           <img src="/logo-SMD.png" alt="SmartDocs Logo" height="70" className="me-3" />
           <img src="/UCC.png" alt="UCC Logo" height="70" />
         </div>
 
-        {/* University Name */}
         <h4 className="fw-bold mb-2" style={{ fontSize: "1.6rem", letterSpacing: "0.5px" }}>
           University of Caloocan City
         </h4>
 
-        {/* SMART-DOCS Title */}
         <h1 className="brand-title fw-bold mt-3 mb-3" style={{ fontSize: "4rem" }}>
           SMART-DOCS
         </h1>
 
-        {/* Full System Title */}
         <p className="lead fw-medium mb-4" style={{ fontSize: "1.05rem", lineHeight: "1.7" }}>
           Secure Management and Automated Receiving<br />
           of Transmitted Documents System
@@ -103,7 +98,7 @@ const Login = ({ onLogin }) => {
             </div>
 
             {/* PASSWORD */}
-            <div className="input-wrapper password-wrapper mb-4">
+            <div className="input-wrapper password-wrapper mb-3">
               <Form.Label className="fw-semibold">Password</Form.Label>
               <Form.Control
                 type={showPassword ? "text" : "password"}
@@ -123,6 +118,13 @@ const Login = ({ onLogin }) => {
                   {showPassword ? <BsEyeSlash /> : <BsEye />}
                 </button>
               )}
+            </div>
+
+            {/* FORGOT PASSWORD */}
+            <div className="text-end mb-4">
+              <Link to="/forgot-password" className="text-decoration-none fw-semibold">
+                Forgot password?
+              </Link>
             </div>
 
             {/* LOGIN BUTTON */}

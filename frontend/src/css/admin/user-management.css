@@ -1,0 +1,455 @@
+/* ==========================
+   USER MANAGEMENT CONTAINER
+   ========================== */
+.user-management-container {
+  padding: 32px 40px 40px 40px;
+  background: #f5f7fa;
+  min-height: 100vh;
+}
+
+@media (max-width: 992px) {
+  .user-management-container {
+    padding: 24px 24px 32px 24px;
+  }
+}
+
+/* ==========================
+   PAGE HEADER
+   ========================== */
+.user-page-header {
+  margin-bottom: 32px;
+}
+
+.user-page-header h2 {
+  font-weight: 700;
+  font-size: 2.25rem;
+  color: #1a1f2e;
+  letter-spacing: -0.02em;
+  margin-bottom: 8px;
+}
+
+.user-page-header p {
+  font-size: 1rem;
+  color: #64748b;
+  font-weight: 400;
+  margin: 0;
+}
+
+@media (max-width: 768px) {
+  .user-page-header h2 {
+    font-size: 1.875rem;
+  }
+  
+  .user-page-header p {
+    font-size: 0.9375rem;
+  }
+}
+
+/* ==========================
+   CREATE USER BUTTON
+   ========================== */
+.user-create-btn {
+  background-color: #16a34a !important;
+  border-color: #16a34a !important;
+  color: white !important;
+  font-weight: 500;
+  border-radius: 6px;
+  padding: 8px 16px;
+  transition: background-color 0.2s ease, border-color 0.2s ease !important;
+}
+
+.user-create-btn:hover {
+  background-color: #15803d !important;
+  border-color: #15803d !important;
+}
+
+/* ==========================
+   SEARCH + FILTER CARD
+   ========================== */
+.user-search-card {
+  border-radius: 12px;
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.04), 0 1px 2px 0 rgba(0, 0, 0, 0.02);
+  transition: box-shadow 0.2s ease, border-color 0.2s ease !important;
+}
+
+.user-search-card:hover {
+  box-shadow: 0 4px 12px 0 rgba(0, 0, 0, 0.08), 0 2px 4px 0 rgba(0, 0, 0, 0.04) !important;
+  border-color: #cbd5e1 !important;
+}
+
+.user-search-card .card-body {
+  padding: 20px 24px;
+}
+
+.user-search-btn {
+  background-color: #16a34a !important;
+  border-color: #16a34a !important;
+  color: white !important;
+  font-weight: 500;
+  border-radius: 6px;
+  transition: background-color 0.2s ease, border-color 0.2s ease !important;
+}
+
+.user-search-btn:hover {
+  background-color: #15803d !important;
+  border-color: #15803d !important;
+}
+
+/* ==========================
+   AUTOCOMPLETE
+   ========================== */
+.user-autocomplete-suggestions {
+  position: absolute;
+  top: 42px;
+  left: 0;
+  right: 0;
+  z-index: 1050;
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
+  max-height: 220px;
+  overflow-y: auto;
+  box-shadow: 0 4px 12px 0 rgba(0, 0, 0, 0.08), 0 2px 4px 0 rgba(0, 0, 0, 0.04);
+  padding: 8px 0;
+  margin-top: 2px;
+}
+
+.user-autocomplete-suggestions li {
+  padding: 10px 16px;
+  cursor: pointer;
+  font-size: 0.9375rem;
+  color: #334155;
+  transition: background-color 0.15s ease;
+}
+
+.user-autocomplete-suggestions li:hover {
+  background-color: #f8fafc;
+  color: #1e293b;
+  font-weight: 500;
+}
+
+.user-autocomplete-suggestions li.active {
+  background-color: #fff5f0;
+  color: #1e293b;
+  font-weight: 500;
+}
+
+.user-autocomplete-suggestions::-webkit-scrollbar {
+  width: 6px;
+}
+
+.user-autocomplete-suggestions::-webkit-scrollbar-track {
+  background: #f8fafc;
+}
+
+.user-autocomplete-suggestions::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 3px;
+}
+
+.user-autocomplete-suggestions::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
+
+/* ==========================
+   USER TABLE CARD
+   ========================== */
+.user-card-list {
+  border-radius: 12px;
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.04), 0 1px 2px 0 rgba(0, 0, 0, 0.02);
+  transition: box-shadow 0.2s ease, border-color 0.2s ease !important;
+  overflow: hidden;
+}
+
+.user-card-list:hover {
+  box-shadow: 0 4px 12px 0 rgba(0, 0, 0, 0.08), 0 2px 4px 0 rgba(0, 0, 0, 0.04) !important;
+  border-color: #cbd5e1 !important;
+}
+
+.user-card-list .card-header {
+  background: #ffffff !important;
+  border-bottom: 1px solid #e2e8f0;
+  padding: 12px 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-weight: 500;
+  height: 48px;
+  box-sizing: border-box;
+}
+
+.user-card-list .card-header h5 {
+  font-weight: 600;
+  font-size: 1rem;
+  color: #1a1f2e;
+  margin: 0;
+  letter-spacing: -0.01em;
+  display: flex;
+  align-items: center;
+  line-height: 1.2;
+}
+
+/* ==========================
+   USER TABLE STYLE
+   ========================== */
+.user-table {
+  width: 100%;
+  margin-bottom: 0;
+}
+
+.user-table thead th {
+  font-weight: 600;
+  font-size: 0.8125rem;
+  color: #475569;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  background: #f8fafc;
+  border-bottom: 2px solid #e2e8f0;
+  padding: 12px 16px;
+  white-space: nowrap;
+  vertical-align: middle;
+}
+
+.user-table tbody td {
+  font-weight: 400;
+  font-size: 0.9375rem;
+  color: #334155;
+  padding: 16px;
+  border-bottom: 1px solid #f1f5f9;
+  vertical-align: middle;
+}
+
+.user-table tbody td code {
+  background: #f1f5f9;
+  color: #475569;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  font-family: 'SF Mono', 'Monaco', 'Inconsolata', 'Roboto Mono', monospace;
+}
+
+.user-table tbody tr {
+  transition: background-color 0.15s ease;
+  cursor: pointer;
+}
+
+.user-table tbody tr:hover {
+  background-color: #f8fafc !important;
+}
+
+.user-table.table-hover tbody tr:hover,
+.user-table.table-hover tbody tr:focus,
+.table-hover > tbody > tr:hover > * {
+  background-color: #f8fafc !important;
+  box-shadow: none !important;
+}
+
+/* Scrollable body */
+.user-table-wrapper {
+  max-height: 500px;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.user-table-loading-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(255, 255, 255, 0.9);
+  z-index: 10;
+  border-radius: 0 0 12px 12px;
+}
+
+/* ==========================
+   BADGES
+   ========================== */
+.user-management-container .badge {
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 4px 10px;
+  border-radius: 6px;
+  letter-spacing: 0.01em;
+}
+
+.user-management-container .badge-success {
+  background-color: #22C55E !important;
+  color: #ffffff !important;
+}
+
+.user-management-container .badge-info {
+  background-color: #0dcaf0 !important;
+  color: #ffffff !important;
+}
+
+.user-management-container .badge-danger {
+  background-color: #EF4444 !important;
+  color: #ffffff !important;
+}
+
+.user-management-container .badge-warning {
+  background-color: #F59E0B !important;
+  color: #ffffff !important;
+}
+
+.user-management-container .badge-secondary {
+  background-color: #64748B !important;
+  color: #ffffff !important;
+}
+
+/* ==========================
+   ACTION BUTTONS
+   Note: Global button styles are imported from css/global/buttons.css
+   Only page-specific button overrides should be defined here
+   ========================== */
+
+/* ==========================
+   FORM CONTROLS - ORANGE FOCUS
+   ========================== */
+.user-management-container .form-control:focus,
+.user-management-container .form-select:focus,
+.user-management-container input:focus,
+.user-management-container textarea:focus {
+  border-color: #f97316 !important;
+  box-shadow: 0 0 0 3px rgba(249, 115, 22, 0.1) !important;
+  outline: none !important;
+}
+
+/* custom-btn-delete styles are now in global/buttons.css */
+
+/* ==========================
+   PAGINATION
+   ========================== */
+.user-management-container .pagination {
+  margin: 16px 0;
+  gap: 4px;
+}
+
+.user-management-container .pagination .page-item .page-link {
+  border-color: #e2e8f0;
+  color: #475569;
+  padding: 8px 12px;
+  border-radius: 6px;
+  font-weight: 500;
+  transition: all 0.15s ease;
+  margin: 0 2px;
+}
+
+.user-management-container .pagination .page-item.active .page-link {
+  background-color: #f97316 !important;
+  border-color: #f97316 !important;
+  color: white !important;
+}
+
+.user-management-container .pagination .page-item:not(.active):not(.disabled) .page-link:hover {
+  background-color: #fff5f0 !important;
+  color: #f97316 !important;
+  border-color: #f97316 !important;
+}
+
+.user-management-container .pagination .page-item.disabled .page-link {
+  color: #cbd5e1 !important;
+  background-color: #ffffff !important;
+  border-color: #e2e8f0 !important;
+  cursor: not-allowed;
+}
+
+/* ==========================
+   RESPONSIVE
+   ========================== */
+@media (max-width: 768px) {
+  .create-user-btn {
+    width: 100%;
+    margin-top: 10px;
+  }
+
+  .user-search-card input,
+  .user-search-card select,
+  .user-search-card button {
+    width: 100%;
+    margin-bottom: 8px;
+  }
+}
+
+/* ==========================
+   SCROLLBAR
+   ========================== */
+.user-table-wrapper::-webkit-scrollbar {
+  width: 6px;
+}
+
+.user-table-wrapper::-webkit-scrollbar-track {
+  background: #f8fafc;
+}
+
+.user-table-wrapper::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 3px;
+}
+
+.user-table-wrapper::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
+
+/* ==========================
+   MORE FILTERS DROPDOWN
+   Note: Base styles are in global/buttons.css
+   ========================== */
+/* User dropdown toggle inherits from .dropdown-toggle-filter in global */
+.user-dropdown-toggle {
+  /* Custom overrides if needed */
+}
+
+/* ==========================
+   DROPDOWN MENU
+   ========================== */
+.user-management-container .dropdown-menu {
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px 0 rgba(0, 0, 0, 0.08), 0 2px 4px 0 rgba(0, 0, 0, 0.04);
+  padding: 16px;
+  overflow: visible;
+}
+
+.user-management-container .dropdown-menu .form-label {
+  font-weight: 600;
+  font-size: 0.8125rem;
+  color: #475569;
+  margin-bottom: 6px;
+}
+
+.user-management-container .dropdown-menu .form-select {
+  border-color: #e2e8f0;
+  border-radius: 6px;
+  font-size: 0.9375rem;
+}
+
+.user-management-container .dropdown-menu .form-select:focus {
+  border-color: #f97316 !important;
+  box-shadow: 0 0 0 3px rgba(249, 115, 22, 0.1) !important;
+}
+
+/* ==========================
+   MOBILE RESPONSIVE
+   ========================== */
+@media (max-width: 768px) {
+  .user-card-list .card-header {
+    padding: 16px 20px;
+  }
+  
+  .user-table-wrapper {
+    max-height: 400px;
+  }
+  
+  .user-table thead th,
+  .user-table tbody td {
+    padding: 12px;
+    font-size: 0.875rem;
+  }
+}
