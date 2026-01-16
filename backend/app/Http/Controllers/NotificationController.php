@@ -13,7 +13,17 @@ class NotificationController extends Controller
             ->orderBy('created_at', 'desc')
             ->paginate(20);
 
-        return response()->json($notifications);
+        // Get the actual unread count (not limited by pagination)
+        $unreadCount = $request->user()
+            ->notifications()
+            ->where('is_read', false)
+            ->count();
+
+        // Add unread_count to the response
+        $response = $notifications->toArray();
+        $response['unread_count'] = $unreadCount;
+
+        return response()->json($response);
     }
 
     public function markAsRead(Request $request, $id)

@@ -36,6 +36,9 @@ class AuthController extends Controller
 
         $token = $user->createToken('auth-token')->plainTextToken;
 
+        // Load user info with profile picture
+        $user->load('info');
+
         return response()->json([
             'user' => $user,
             'token' => $token,
@@ -53,6 +56,9 @@ class AuthController extends Controller
 
     public function me(Request $request)
     {
-        return response()->json($request->user());
+        $user = $request->user();
+        // Load user info with profile picture
+        $user->load('info');
+        return response()->json($user);
     }
 }

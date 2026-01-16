@@ -8,20 +8,28 @@ class Document extends Model
     protected $fillable = [
         'title',
         'document_id',
-        'file_path',
-        'file_type',
-        'file_size',
         'description',
         'uploaded_by',
-        'ocr_text',
-        'is_ocr_processed',
         'qr_code_path',
         'paper_id',
+        'classification',
+        'classification_confidence',
+        'classification_method',
+        'workflow_instance_id',
+        'workflow_status',
+        'is_validated',
+        'validation_confidence',
+        'validated_at',
+        'validation_results',
     ];
 
     protected $casts = [
         'is_ocr_processed' => 'boolean',
         'file_size' => 'integer',
+        'is_validated' => 'boolean',
+        'validation_confidence' => 'decimal:2',
+        'validated_at' => 'datetime',
+        'validation_results' => 'array',
     ];
 
     public function uploader()
@@ -50,6 +58,22 @@ class Document extends Model
     {
         return 'PID-' . strtoupper(uniqid());
     }
+
+    public function files()
+    {
+        return $this->hasMany(DocumentFile::class);
+    }
+
+    public function decisions()
+    {
+        return $this->hasMany(DocumentDecision::class);
+    }
+
+    public function workflowInstance()
+    {
+        return $this->belongsTo(WorkflowInstance::class);
+    }
+
 }
 
 

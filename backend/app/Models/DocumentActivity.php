@@ -10,6 +10,15 @@ class DocumentActivity extends Model
         'user_id',
         'activity_type',
         'details',
+        'ip_address',
+        'user_agent',
+        'old_value',
+        'new_value',
+        'metadata',
+    ];
+
+    protected $casts = [
+        'metadata' => 'array',
     ];
 
     public function document()

@@ -20,6 +20,7 @@
         "@capacitor/core": "^8.0.0",
         "@capacitor/ios": "^8.0.0",
         "cropperjs": "^2.1.0",
+        "jspdf": "^3.0.4",
         "react-cropper": "^2.3.3"
     }
 }
